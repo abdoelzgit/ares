@@ -1,0 +1,83 @@
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum UserRole {
+  DIREKTUR
+  WAKASEK
+  GURU
+  PEMBINA
+  TU
+  KEUANGAN
+}
+
+enum DocCategory {
+  GOV
+  CUR
+  STU
+  BRD
+  HRD
+  FIN
+  OPS
+  QMS
+  COM
+  IT
+}
+
+enum ConfidentialityLevel {
+  PUBLIC
+  INTERNAL
+  CONFIDENTIAL
+}
+
+model User {
+  id               String            @id @default(uuid()) @db.Uuid
+  name             String
+  email            String            @unique
+  role             UserRole
+  category         DocCategory?
+  createdAt        DateTime          @default(now()) @map("created_at")
+  documentVersions DocumentVersion[]
+
+  @@map("users")
+}
+
+model Document {
+  id                   String               @id @default(uuid()) @db.Uuid
+  title                String
+  documentNumber       String?              @map("document_number")
+  category             DocCategory
+  schoolYear           String               @map("school_year")
+  description          String?
+  tags                 String[]             @default([])
+  confidentialityLevel ConfidentialityLevel @default(INTERNAL) @map("confidentiality_level")
+  currentVersionId     String?              @unique @map("current_version_id") @db.Uuid
+  currentVersion       DocumentVersion?     @relation("CurrentVersion", fields: [currentVersionId], references: [id], onDelete: SetNull)
+  versions             DocumentVersion[]    @relation("DocumentVersions")
+  createdAt            DateTime             @default(now()) @map("created_at")
+  updatedAt            DateTime             @updatedAt @map("updated_at")
+
+  @@index([category])
+  @@index([schoolYear])
+  @@map("documents")
+}
+
+model DocumentVersion {
+  id                 String    @id @default(uuid()) @db.Uuid
+  documentId         String    @map("document_id") @db.Uuid
+  document           Document  @relation("DocumentVersions", fields: [documentId], references: [id], onDelete: Cascade)
+  versionNumber      String    @map("version_number")
+  filePath           String    @map("file_path")
+  isColdStorage      Boolean   @default(false) @map("is_cold_storage")
+  uploadedById       String    @map("uploaded_by_id") @db.Uuid
+  uploadedBy         User      @relation(fields: [uploadedById], references: [id])
+  createdAt          DateTime  @default(now()) @map("created_at")
+  currentForDocument Document? @relation("CurrentVersion")
+
+  @@index([documentId])
+  @@map("document_versions")
+}

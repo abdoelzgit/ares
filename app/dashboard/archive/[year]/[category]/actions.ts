@@ -6,6 +6,7 @@ import { mkdir, unlink, writeFile } from "fs/promises";
 import { join, extname } from "path";
 import { randomUUID } from "crypto";
 import { revalidatePath } from "next/cache";
+import { auth } from "@/auth";
 
 const db = prisma as any;
 
@@ -64,19 +65,6 @@ export async function getDocuments(
     console.error("Error fetching documents:", error);
     return [];
   }
-}
-
-// ponytail: mock auth helper to bypass missing session provider
-async function auth() {
-  try {
-    const user = await db.user.findFirst();
-    if (user) {
-      return { user: { id: user.id } };
-    }
-  } catch (err) {
-    console.error("Auth helper error:", err);
-  }
-  return null;
 }
 
 export async function uploadDocument(

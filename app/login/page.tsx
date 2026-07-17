@@ -1,7 +1,7 @@
 "use client"
 
 
-import { LoginForm } from "@/components/login-form"
+import { LoginForm } from "@/components/auth/login-form"
 import { GalleryVerticalEndIcon } from "lucide-react"
 import { useState, useTransition } from "react"
 import {signIn} from 'next-auth/react'

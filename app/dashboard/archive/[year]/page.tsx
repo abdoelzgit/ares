@@ -223,7 +223,7 @@ export default function YearArchivePage({ params }: PageProps) {
   const getCategoryDocCount = (category: DocCategory): number => {
     const access = getAccessLevel(selectedRole, category)
     return mockArchivedDocs.filter(doc => {
-      if (doc.year !== year || doc.category !== category) return false
+      if (doc.year !== year || doc.category !== category) return false 
       if (access === 'LOCKED' && doc.confidentialityLevel === 'CONFIDENTIAL') return false
       return true
     }).length
@@ -242,10 +242,8 @@ export default function YearArchivePage({ params }: PageProps) {
 
   const yearCount = mockArchivedDocs.filter(d => d.year === year).length
 
-  return (
-    <SidebarProvider>
-      <AppSidebar />
-      <SidebarInset>
+  return (<>
+  
         {/* HEADER */}
         <header className="flex h-16 shrink-0 items-center justify-between gap-2 border-b px-4 bg-background/95 backdrop-blur">
           <div className="flex items-center gap-2">
@@ -329,45 +327,45 @@ export default function YearArchivePage({ params }: PageProps) {
             </div>
 
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              {categories.map((cat) => {
-                const access = getAccessLevel(selectedRole, cat.code)
-                const isLocked = access === 'LOCKED'
-                const isCategoryActive = activeCategory === cat.code
-                const fileCount = getCategoryDocCount(cat.code)
+                {categories.map((cat) => {
+                  const access = getAccessLevel(selectedRole, cat.code)
+                  const isLocked = access === 'LOCKED'
+                  const isCategoryActive = activeCategory === cat.code
+                  const fileCount = getCategoryDocCount(cat.code)
 
-                return (
-                  <Link key={cat.code} href={`/dashboard/archive/${year}/${cat.code}`} className="block">
-                    <Card 
-                      className={`relative overflow-hidden border-border/50 h-[100px] transition-all duration-200 ${
-                        isCategoryActive 
-                          ? 'bg-primary/10 border-primary shadow-sm scale-[1.02]' 
-                          : isLocked 
-                            ? 'bg-muted/30 border-muted opacity-80' 
-                            : 'bg-card border-l-4 border-l-primary hover:translate-y-[-2px] hover:shadow'
-                      }`}
-                    >
-                      <CardHeader className="p-4 pb-2">
-                        <div className="flex justify-between items-start">
-                          <span className="text-2xl font-extrabold font-heading text-foreground/80 tracking-wide">
-                            {cat.code}
-                          </span>
-                          <div className="flex items-center gap-2">
-                            <span className="text-[10px] font-bold text-muted-foreground">
-                              {fileCount} Berkas
+                  return (
+                    <Link key={cat.code} href={`/dashboard/archive/${year}/${cat.code}`} className="block">
+                      <Card 
+                        className={`relative overflow-hidden border-border/50 h-[100px] transition-all duration-200 ${
+                          isCategoryActive 
+                            ? 'bg-primary/10 border-primary shadow-sm scale-[1.02]' 
+                            : isLocked 
+                              ? 'bg-muted/30 border-muted opacity-80' 
+                              : 'bg-card border-l-4 border-l-primary hover:translate-y-[-2px] hover:shadow'
+                        }`}
+                      >
+                        <CardHeader className="p-4 pb-2">
+                          <div className="flex justify-between items-start">
+                            <span className="text-2xl font-extrabold font-heading text-foreground/80 tracking-wide">
+                              {cat.code}
                             </span>
-                            {isLocked ? (
-                              <Lock className="h-3.5 w-3.5 text-red-500" />
-                            ) : (
-                              <Unlock className="h-3.5 w-3.5 text-green-600" />
-                            )}
+                            <div className="flex items-center gap-2">
+                              <span className="text-[10px] font-bold text-muted-foreground">
+                                {fileCount} Berkas
+                              </span>
+                              {isLocked ? (
+                                <Lock className="h-3.5 w-3.5 text-red-500" />
+                              ) : (
+                                <Unlock className="h-3.5 w-3.5 text-green-600" />
+                              )}
+                            </div>
                           </div>
-                        </div>
-                        <CardTitle className="text-sm font-bold mt-1 text-foreground/90">{cat.name}</CardTitle>
-                      </CardHeader>
-                    </Card>
-                  </Link>
-                )
-              })}
+                          <CardTitle className="text-sm font-bold mt-1 text-foreground/90">{cat.name}</CardTitle>
+                        </CardHeader>
+                      </Card>
+                    </Link>
+                  )
+                })}
             </div>
           </section>
 
@@ -460,7 +458,7 @@ export default function YearArchivePage({ params }: PageProps) {
             </Card>
           </section> */}
         </main>
-      </SidebarInset>
-    </SidebarProvider>
+    
+  </>
   )
 }

@@ -21,6 +21,8 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar"
 import { ChevronsUpDownIcon, SparklesIcon, BadgeCheckIcon, CreditCardIcon, BellIcon, LogOutIcon } from "lucide-react"
+import { signOut } from "next-auth/react"
+import { useTransition } from "react"
 
 export function NavUser({
   user,
@@ -30,8 +32,19 @@ export function NavUser({
     email: string
     avatar: string
   }
-}) {
+}) 
+
+
+
+{
   const { isMobile } = useSidebar()
+   const [isPending, startTransition] = useTransition();
+
+  function handleLogout() {
+    startTransition(async () => {
+      await signOut({ callbackUrl: "/login" });
+    });
+  }
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -98,7 +111,7 @@ export function NavUser({
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={() => handleLogout()}>
               <LogOutIcon
               />
               Log out

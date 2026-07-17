@@ -3,7 +3,6 @@
 import * as React from "react"
 import Link from "next/link"
 import { useState } from "react"
-import { AppSidebar } from "@/components/app-sidebar"
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -13,11 +12,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
 import { Separator } from "@/components/ui/separator"
-import {
-  SidebarInset,
-  SidebarProvider,
-  SidebarTrigger,
-} from "@/components/ui/sidebar"
+import { SidebarTrigger } from "@/components/ui/sidebar"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
@@ -240,23 +235,17 @@ export default function Page() {
   const archivedDocsCount = mockDocuments.filter(d => d.isArchive).length
 
   return (
-    <SidebarProvider>
-      <AppSidebar />
-      <SidebarInset>
-        {/* TOP BAR / HEADER */}
-        <header className="flex h-16 shrink-0 items-center justify-between gap-2 border-b px-4 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12 bg-background/95 backdrop-blur">
-          <div className="flex items-center gap-2">
-            <SidebarTrigger className="-ml-1" />
+    <>
+      {/* TOP BAR / HEADER */}
+      <header className="flex h-16 shrink-0 items-center justify-between gap-2 border-b px-4 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12 bg-background/95 backdrop-blur">
+        <div className="flex items-center gap-2">
+          <SidebarTrigger className="-ml-1" />
             <Separator
               orientation="vertical"
               className="mr-2 data-vertical:h-4 data-vertical:self-auto"
             />
             <Breadcrumb>
               <BreadcrumbList>
-                <BreadcrumbItem>
-                  <BreadcrumbLink href="/dashboard">SIAD-Sekolah</BreadcrumbLink>
-                </BreadcrumbItem>
-                <BreadcrumbSeparator />
                 <BreadcrumbItem>
                   <BreadcrumbPage>Dashboard</BreadcrumbPage>
                 </BreadcrumbItem>
@@ -266,10 +255,7 @@ export default function Page() {
 
           {/* SIMULATION ROLE SWITCHER (Signature Element) */}
           <div className="flex items-center gap-3">
-            <span className="hidden text-xs font-semibold text-muted-foreground lg:inline-block">
-              Simulasi Peran:
-            </span>
-            <Select value={selectedRole} onValueChange={(val) => setSelectedRole(val as UserRole)}>
+            {/* <Select value={selectedRole} onValueChange={(val) => setSelectedRole(val as UserRole)}>
               <SelectTrigger className="w-[180px] h-9 text-xs font-medium">
                 <SelectValue placeholder="Pilih Peran" />
               </SelectTrigger>
@@ -281,7 +267,7 @@ export default function Page() {
                 <SelectItem value="TU">Staf Tata Usaha</SelectItem>
                 <SelectItem value="KEUANGAN">Keuangan</SelectItem>
               </SelectContent>
-            </Select>
+            </Select> */}
           </div>
         </header>
 
@@ -515,7 +501,6 @@ export default function Page() {
             </div>
           </section>
         </main>
-      </SidebarInset>
-    </SidebarProvider>
+    </>
   )
 }

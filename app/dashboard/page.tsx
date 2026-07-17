@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import Link from "next/link"
 import { useState } from "react"
 import { AppSidebar } from "@/components/app-sidebar"
 import {
@@ -353,39 +354,40 @@ export default function Page() {
                 const isLocked = access === 'LOCKED'
 
                 return (
-                  <Card 
-                    key={cat.code} 
-                    className={`relative overflow-hidden border-border/50 h-[100px] transition-all duration-200 ${
-                      isLocked ? 'bg-muted/30 border-muted opacity-80' : 'bg-card border-l-4 border-l-primary hover:translate-y-[-2px] shadow-sm'
-                    }`}
-                  >
-                    <CardHeader className="p-4 pb-2">
-                      <div className="flex justify-between items-start">
-                        <span className="text-2xl font-extrabold font-heading text-foreground/80 tracking-wide">
-                          {cat.code}
-                        </span>
-                        {/* <Badge 
-                          variant={isLocked ? "destructive" : "default"} 
-                          className="px-1.5 py-0.5 text-[9px] font-semibold tracking-wider uppercase"
-                        >
-                          {isLocked ? (
-                            <span className="flex items-center gap-1"><Lock className="h-2.5 w-2.5" /> Terkunci</span>
-                          ) : (
-                            <span className="flex items-center gap-1"><Unlock className="h-2.5 w-2.5" /> Akses</span>
-                          )}
-                        </Badge> */}
-                      </div>
-                      <CardTitle className="text-sm font-bold mt-1 text-foreground/90">{cat.name}</CardTitle>
-                    </CardHeader>
-                    <CardContent className="p-4 pt-0 text-xs">
-                      <p className="text-[10px] text-muted-foreground leading-relaxed mt-1">
-                        <strong className="text-foreground/70">PIC:</strong> {cat.pic}
-                      </p>
-                      <p className="text-[10px] text-muted-foreground leading-relaxed mt-1">
-                        <strong className="text-foreground/70">Berkas:</strong> {cat.example}
-                      </p>
-                    </CardContent>
-                  </Card>
+                  <Link key={cat.code} href={`/dashboard/${cat.code}`} className="block">
+                    <Card 
+                      className={`relative overflow-hidden border-border/50 h-[100px] transition-all duration-200 ${
+                        isLocked ? 'bg-muted/30 border-muted opacity-80' : 'bg-card border-l-4 border-l-primary hover:translate-y-[-2px] shadow-sm'
+                      }`}
+                    >
+                      <CardHeader className="p-4 pb-2">
+                        <div className="flex justify-between items-start">
+                          <span className="text-2xl font-extrabold font-heading text-foreground/80 tracking-wide">
+                            {cat.code}
+                          </span>
+                          {/* <Badge 
+                            variant={isLocked ? "destructive" : "default"} 
+                            className="px-1.5 py-0.5 text-[9px] font-semibold tracking-wider uppercase"
+                          >
+                            {isLocked ? (
+                              <span className="flex items-center gap-1"><Lock className="h-2.5 w-2.5" /> Terkunci</span>
+                            ) : (
+                              <span className="flex items-center gap-1"><Unlock className="h-2.5 w-2.5" /> Akses</span>
+                            )}
+                          </Badge> */}
+                        </div>
+                        <CardTitle className="text-sm font-bold mt-1 text-foreground/90">{cat.name}</CardTitle>
+                      </CardHeader>
+                      <CardContent className="p-4 pt-0 text-xs">
+                        <p className="text-[10px] text-muted-foreground leading-relaxed mt-1">
+                          <strong className="text-foreground/70">PIC:</strong> {cat.pic}
+                        </p>
+                        <p className="text-[10px] text-muted-foreground leading-relaxed mt-1">
+                          <strong className="text-foreground/70">Berkas:</strong> {cat.example}
+                        </p>
+                      </CardContent>
+                    </Card>
+                  </Link>
                 )
               })}
             </div>

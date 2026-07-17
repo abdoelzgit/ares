@@ -1,11 +1,11 @@
-import postgres from 'postgres';
+ import postgres from 'postgres';
 
 const globalForDb = globalThis as unknown as {
   conn: postgres.Sql | undefined;
 };
 
 // PostgreSQL Connection string from Environment Variable or fallback to localhost
-const connectionString = process.env.DATABASE_URL || 'postgresql://postgres:postgres@localhost:5432/siad_sekolah';
+const connectionString = process.env.DATABASE_URL || 'postgresql://postgres:123@localhost:5432/aresdb';
 
 export const conn = globalForDb.conn ?? postgres(connectionString, {
   max: 10,             // Maximum number of connections in the pool

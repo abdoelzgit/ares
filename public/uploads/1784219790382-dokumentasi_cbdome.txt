@@ -1,0 +1,258 @@
+# Cyberdome Setup dan Migration Guide
+
+Dokumen ini menjelaskan cara menyiapkan Cyberdome di server, lalu cara migrate aplikasi dan database ke server baru atau server produksi.
+
+## 1. Prasyarat
+
+Pastikan server sudah punya:
+
+1. `Node.js` versi yang kompatibel dengan proyek ini
+2. `npm`
+3. `PostgreSQL`
+4. `psql` dan `createdb` untuk restore database
+5. `pm2` untuk menjalankan aplikasi di production
+
+Kalau server masih kosong, install dependency sistem yang umum dipakai:
+
+```bash
+sudo apt update
+sudo apt install -y git curl build-essential postgresql-client
+```
+
+## 2. Ambil Source Code
+
+Clone repository ke server:
+
+```bash
+git clone <repo-url> /cbdome
+cd /cbdome
+```
+
+Lalu install dependency:
+
+```bash
+npm install
+```
+
+## 3. Setup Environment
+
+Buat file `.env.local` di root project dan isi sesuai environment server.
+
+Contoh minimal:
+
+```env
+DB_HOST=localhost
+DB_PORT=5432
+DB_NAME=Databases
+DB_USER=postgres
+DB_PASSWORD=<password-postgres>
+
+NEXT_PUBLIC_SERVER_HOST=<ip-atau-domain-server>
+WAZUH_API_HOSTS=<host-wazuh-1,host-wazuh-2>
+WAZUH_API_PORT=9200
+WAZUH_API_USERNAME=<username>
+WAZUH_API_PASSWORD=<password>
+
+AUTH_SECRET=<secret-random-minimal-16-karakter>
+ADMIN_USERNAME=admin
+ADMIN_PASSWORD=<password-admin>
+```
+
+Catatan:
+
+- Jangan commit file `.env.local`
+- Sesuaikan `NEXT_PUBLIC_SERVER_HOST` dengan domain atau IP server produksi
+- Kalau Cyberdome tersambung ke beberapa endpoint Wazuh, isi `WAZUH_API_HOSTS` dengan format comma-separated
+
+## 4. Setup Database Baru
+
+Kalau server belum punya database, jalankan script setup database:
+
+```bash
+node setup-db.js
+```
+
+Script ini akan:
+
+1. Membuat database `Databases` jika belum ada
+2. Membuat tabel `filtered_alerts`
+3. Menambahkan index dasar
+4. Membuat tabel `api_sources`
+
+Kalau kamu memakai schema baru yang dikelola aplikasi saat runtime, pastikan database tetap bisa diakses oleh user yang ada di `.env.local`.
+
+## 5. Restore Database Dari Backup
+
+Kalau tujuanmu migrate data lama ke server baru, gunakan `restore-db.js`.
+
+Contoh restore default:
+
+```bash
+node restore-db.js --file database_backup.sql
+```
+
+Contoh restore ke server produksi:
+
+```bash
+node restore-db.js \
+  --file database_backup.sql \
+  --host 127.0.0.1 \
+  --port 5432 \
+  --db Databases \
+  --user postgres \
+  --password '<password-postgres>'
+```
+
+Kalau database sudah dibuat manual dan kamu tidak ingin script membuat database lagi:
+
+```bash
+node restore-db.js --file database_backup.sql --no-create-db
+```
+
+Script ini akan:
+
+1. Mengecek apakah database target ada
+2. Membuat database jika belum ada
+3. Mendeteksi dump `UTF-16LE` dan mengonversinya ke `UTF-8` bila perlu
+4. Menjalankan restore lewat `psql`
+
+## 6. Migration Ke Server
+
+Kalau yang dimigrasikan adalah seluruh aplikasi Cyberdome, urutan yang aman adalah:
+
+1. Copy source code ke server
+2. Buat `.env.local`
+3. Install dependency dengan `npm install`
+4. Restore database dengan `restore-db.js`
+5. Jalankan `node setup-db.js` jika database baru dan tabel belum siap
+6. Build aplikasi dengan `npm run build`
+7. Jalankan production dengan PM2
+
+Contoh langkah end-to-end:
+
+```bash
+cd /cbdome
+npm install
+node restore-db.js --file database_backup.sql
+npm run build
+npm run pm2:start
+```
+
+## 7. Jalankan Dengan PM2
+
+Project ini sudah punya script PM2 di `package.json`.
+
+Start production:
+
+```bash
+npm run pm2:start
+```
+
+Stop:
+
+```bash
+npm run pm2:stop
+```
+
+Restart:
+
+```bash
+npm run pm2:restart
+```
+
+Lihat status:
+
+```bash
+npm run pm2:status
+```
+
+Lihat log:
+
+```bash
+npm run pm2:logs
+```
+
+Catatan penting:
+
+- Jangan jalankan `npm run dev` bersamaan dengan PM2 production
+- Mode development juga menyalakan `socket-server.js` di port `4000`
+- Kalau production sudah jalan, jalankan hanya satu instance dari setiap service
+
+## 8. Auto Start Saat Server Reboot
+
+Biar Cyberdome otomatis hidup setelah server restart:
+
+```bash
+pm2 startup
+pm2 save
+```
+
+Kalau `pm2 startup` mengeluarkan perintah tambahan, jalankan perintah itu sesuai instruksi dari PM2.
+
+## 9. Verifikasi Setelah Migrasi
+
+Setelah migrate selesai, cek hal berikut:
+
+1. Aplikasi bisa dibuka di browser
+2. Login admin berhasil
+3. Data `filtered_alerts` muncul
+4. Socket server tidak error di port `4000`
+5. Log PM2 tidak menunjukkan error DB atau auth
+
+Perintah yang berguna:
+
+```bash
+pm2 list
+pm2 logs cyberthreatmap-nextjs
+pm2 logs cyberthreatmap-socket
+```
+
+## 10. Troubleshooting
+
+### PostgreSQL tidak bisa diakses
+
+Periksa:
+
+```bash
+sudo systemctl status postgresql
+psql --version
+```
+
+Pastikan credential di `.env.local` benar.
+
+### Restore gagal
+
+Biasanya penyebabnya:
+
+- `psql` belum terpasang
+- password database salah
+- database target belum ada
+- file dump korup atau encoding tidak sesuai
+
+### Port 4000 sudah dipakai
+
+Berarti ada proses socket server lain yang masih jalan. Cek proses yang aktif lalu stop dulu sebelum start ulang PM2.
+
+### Data lama tidak muncul
+
+Biasanya karena:
+
+- `filtered_alerts` belum ter-restore
+- koneksi database di `.env.local` salah
+- socket server belum berhasil membaca data dari database
+
+## 11. Ringkasan Cepat
+
+Kalau hanya butuh urutan singkat:
+
+```bash
+git clone <repo-url> /cbdome
+cd /cbdome
+npm install
+# isi .env.local
+node restore-db.js --file database_backup.sql
+npm run build
+npm run pm2:start
+pm2 save
+```
+

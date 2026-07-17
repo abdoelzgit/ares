@@ -90,9 +90,9 @@ ALTER TABLE "documents" ADD COLUMN "search_vector" tsvector;
 CREATE OR REPLACE FUNCTION documents_search_trigger() RETURNS trigger AS $$
 BEGIN
   NEW.search_vector :=
-    setweight(to_tsvector('indonesian', COALESCE(NEW.title, '')), 'A') ||
-    setweight(to_tsvector('indonesian', COALESCE(NEW.document_number, '')), 'B') ||
-    setweight(to_tsvector('indonesian', COALESCE(NEW.description, '')), 'C');
+    setweight(to_tsvector('simple', COALESCE(NEW.title, '')), 'A') ||
+    setweight(to_tsvector('simple', COALESCE(NEW.document_number, '')), 'B') ||
+    setweight(to_tsvector('simple', COALESCE(NEW.description, '')), 'C');
   RETURN NEW;
 END
 $$ LANGUAGE plpgsql;

@@ -15,31 +15,31 @@ enum UserRole {
   KEUANGAN
 }
 
-enum DocCategory {
-  GOV
-  CUR
-  STU
-  BRD
-  HRD
-  FIN
-  OPS
-  QMS
-  COM
-  IT
-}
-
 enum ConfidentialityLevel {
   PUBLIC
   INTERNAL
   CONFIDENTIAL
 }
 
+model Category {
+  id        String     @id @default(uuid()) @db.Uuid
+  code      String     @unique
+  name      String
+  createdAt DateTime   @default(now()) @map("created_at")
+  users     User[]
+  documents Document[]
+
+  @@map("categories")
+}
+
 model User {
   id               String            @id @default(uuid()) @db.Uuid
   name             String
   email            String            @unique
+  password         String
   role             UserRole
-  category         DocCategory?
+  categoryId       String?           @map("category_id") @db.Uuid
+  category         Category?         @relation(fields: [categoryId], references: [id])
   createdAt        DateTime          @default(now()) @map("created_at")
   documentVersions DocumentVersion[]
 
@@ -50,7 +50,8 @@ model Document {
   id                   String               @id @default(uuid()) @db.Uuid
   title                String
   documentNumber       String?              @map("document_number")
-  category             DocCategory
+  categoryId           String               @map("category_id") @db.Uuid
+  category             Category             @relation(fields: [categoryId], references: [id])
   schoolYear           String               @map("school_year")
   description          String?
   tags                 String[]             @default([])
@@ -61,7 +62,7 @@ model Document {
   createdAt            DateTime             @default(now()) @map("created_at")
   updatedAt            DateTime             @updatedAt @map("updated_at")
 
-  @@index([category])
+  @@index([categoryId])
   @@index([schoolYear])
   @@map("documents")
 }

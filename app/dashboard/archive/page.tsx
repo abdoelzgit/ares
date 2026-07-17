@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import Link from "next/link"
 import { AppSidebar } from "@/components/app-sidebar"
 import {
   Breadcrumb,
@@ -17,9 +18,10 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar"
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { 
-  Folder, 
+import {
+  Folder,
   FolderArchive,
+  PlusIcon,
   Calendar,
   Layers,
   ArrowRight
@@ -27,9 +29,10 @@ import {
 
 export default function ArchiveDirectoryPage() {
   const archiveYears = [
-    { year: "2026", count: 3, desc: "Arsip tahun berjalan yang sudah dipindahkan" },
-    { year: "2025", count: 3, desc: "Arsip lengkap tahun ajaran sebelumnya" },
-    { year: "2024", count: 3, desc: "Dokumen historis lawas sekolah" },
+    { year: "2027", countLabel: "10 Folder", desc: "Tahun ajaran baru dengan folder bidang default" },
+    { year: "2026", countLabel: "3 Berkas", desc: "Arsip tahun berjalan yang sudah dipindahkan" },
+    { year: "2025", countLabel: "3 Berkas", desc: "Arsip lengkap tahun ajaran sebelumnya" },
+    { year: "2024", countLabel: "3 Berkas", desc: "Dokumen historis lawas sekolah" },
   ]
 
   return (
@@ -77,19 +80,19 @@ export default function ArchiveDirectoryPage() {
               <Calendar className="h-3.5 w-3.5" />
               Folder Tahun Arsip
             </h2>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {archiveYears.map((yr) => {
                 return (
-                  <a href={`/dashboard/archive/${yr.year}`} key={yr.year} className="group">
-                    <Card 
+                  <Link href={`/dashboard/archive/${yr.year}`} key={yr.year} className="group">
+                    <Card
                       className="relative overflow-hidden border-border/50 transition-all duration-300 hover:shadow-md hover:border-amber-500/50 bg-card hover:bg-amber-500/[0.02]"
                     >
                       <CardHeader className="p-6 flex flex-col gap-3">
                         <div className="flex justify-between items-start">
                           <Folder className="h-12 w-12 text-amber-500 fill-amber-500/10 group-hover:fill-amber-500/20 group-hover:scale-105 transition-all duration-300" />
                           <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-600 border border-amber-500/20">
-                            {yr.count} Berkas
+                            {yr.countLabel}
                           </span>
                         </div>
                         <div className="flex flex-col gap-1 mt-2">
@@ -103,9 +106,17 @@ export default function ArchiveDirectoryPage() {
                         </div>
                       </CardHeader>
                     </Card>
-                  </a>
+                  </Link>
                 )
               })}
+              <Card className="h-48 border-border/50 overflow-hidden transition-all duration-300 hover:shadow-md hover:border-amber-500/50 bg-card hover:bg-amber-500/[0.02] flex items-center justify-center">
+                <div className="flex flex-col items-center gap-3 text-center">
+                  <PlusIcon className="h-8 w-8 p-1 border-2 rounded-full text-gray-500" />
+                  <p className="text-xs text-gray-500">
+                    Tambah folder tahun ajaran baru
+                  </p>
+                </div>
+              </Card>
             </div>
           </section>
 

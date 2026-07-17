@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import Link from "next/link"
 import { useState, use } from "react"
 import { AppSidebar } from "@/components/app-sidebar"
 import {
@@ -298,11 +299,7 @@ export default function YearArchivePage({ params }: PageProps) {
         <main className="flex flex-1 flex-col gap-6 p-6 overflow-y-auto">
           {/* Back button and page title */}
           <div className="flex flex-col gap-3">
-            <a href="/dashboard/archive">
-              <Button variant="ghost" size="sm" className="h-7 text-xs gap-1 -ml-2 text-muted-foreground hover:text-foreground">
-                <ArrowLeft className="h-3.5 w-3.5" /> Kembali ke Indeks Arsip
-              </Button>
-            </a>
+            
             
             <div className="flex flex-col gap-1">
               <h1 className="text-xl font-bold font-heading tracking-tight flex items-center gap-2">
@@ -316,12 +313,9 @@ export default function YearArchivePage({ params }: PageProps) {
           </div>
 
           {/* CABINETS GRID (SCANNER / CABINETS SECTION) */}
-          <section className="space-y-3">
+          <section className="">
             <div className="flex justify-between items-center">
-              <h2 className="text-xs font-bold text-muted-foreground uppercase tracking-wider flex items-center gap-1.5">
-                <Layers className="h-3.5 w-3.5" />
-                Lemari Bidang (Tahun {year})
-              </h2>
+              
               {activeCategory && (
                 <Button 
                   variant="ghost" 
@@ -342,47 +336,43 @@ export default function YearArchivePage({ params }: PageProps) {
                 const fileCount = getCategoryDocCount(cat.code)
 
                 return (
-                  <Card 
-                    key={cat.code}
-                    onClick={() => {
-                      if (!isLocked) {
-                        setActiveCategory(isCategoryActive ? null : cat.code)
-                      }
-                    }}
-                    className={`relative overflow-hidden cursor-pointer border-border/50 h-[100px] transition-all duration-200 ${
-                      isCategoryActive 
-                        ? 'bg-primary/10 border-primary shadow-sm scale-[1.02]' 
-                        : isLocked 
-                          ? 'bg-muted/30 border-muted opacity-80 cursor-not-allowed' 
-                          : 'bg-card border-l-4 border-l-primary hover:translate-y-[-2px] hover:shadow'
-                    }`}
-                  >
-                    <CardHeader className="p-4 pb-2">
-                      <div className="flex justify-between items-start">
-                        <span className="text-2xl font-extrabold font-heading text-foreground/80 tracking-wide">
-                          {cat.code}
-                        </span>
-                        <div className="flex items-center gap-2">
-                          <span className="text-[10px] font-bold text-muted-foreground">
-                            {fileCount} Berkas
+                  <Link key={cat.code} href={`/dashboard/archive/${year}/${cat.code}`} className="block">
+                    <Card 
+                      className={`relative overflow-hidden border-border/50 h-[100px] transition-all duration-200 ${
+                        isCategoryActive 
+                          ? 'bg-primary/10 border-primary shadow-sm scale-[1.02]' 
+                          : isLocked 
+                            ? 'bg-muted/30 border-muted opacity-80' 
+                            : 'bg-card border-l-4 border-l-primary hover:translate-y-[-2px] hover:shadow'
+                      }`}
+                    >
+                      <CardHeader className="p-4 pb-2">
+                        <div className="flex justify-between items-start">
+                          <span className="text-2xl font-extrabold font-heading text-foreground/80 tracking-wide">
+                            {cat.code}
                           </span>
-                          {isLocked ? (
-                            <Lock className="h-3.5 w-3.5 text-red-500" />
-                          ) : (
-                            <Unlock className="h-3.5 w-3.5 text-green-600" />
-                          )}
+                          <div className="flex items-center gap-2">
+                            <span className="text-[10px] font-bold text-muted-foreground">
+                              {fileCount} Berkas
+                            </span>
+                            {isLocked ? (
+                              <Lock className="h-3.5 w-3.5 text-red-500" />
+                            ) : (
+                              <Unlock className="h-3.5 w-3.5 text-green-600" />
+                            )}
+                          </div>
                         </div>
-                      </div>
-                      <CardTitle className="text-sm font-bold mt-1 text-foreground/90">{cat.name}</CardTitle>
-                    </CardHeader>
-                  </Card>
+                        <CardTitle className="text-sm font-bold mt-1 text-foreground/90">{cat.name}</CardTitle>
+                      </CardHeader>
+                    </Card>
+                  </Link>
                 )
               })}
             </div>
           </section>
 
           {/* TABLE OF DOCUMENTS */}
-          <section className="pt-2">
+          {/* <section className="pt-2">
             <Card className="shadow-sm">
               <CardHeader className="pb-3">
                 <div className="flex justify-between items-center">
@@ -468,7 +458,7 @@ export default function YearArchivePage({ params }: PageProps) {
                 </div>
               </CardContent>
             </Card>
-          </section>
+          </section> */}
         </main>
       </SidebarInset>
     </SidebarProvider>

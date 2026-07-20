@@ -7,6 +7,7 @@ import { join, extname } from "path";
 import { randomUUID } from "crypto";
 import { revalidatePath } from "next/cache";
 import { auth } from "@/auth";
+import { getCurrentUser, assertCategoryAccess, resolveCategoryIdFromCode } from '@/lib/rbac'
 
 const db = prisma as any;
 
@@ -39,6 +40,19 @@ async function saveFile(file: File) {
   await writeFile(filepath, Buffer.from(bytes));
 
   return `/uploads/${filename}`;
+}
+
+
+export async function listDocumentsInCategoryAction(categoryCode: string, schoolYear: string) {
+  const user = await getCurrentUser()
+  const categoryId = await resolveCategoryIdFromCode(categoryCode)
+  await assertCategoryAccess(user, categoryId)
+
+  return prisma.document.findMany({
+    where: { categoryId, schoolYear },
+    include: { currentVersion: true },
+    orderBy: { updatedAt: 'desc' },
+  })
 }
 
 export async function getDocuments(
@@ -85,9 +99,9 @@ export async function uploadDocument(
   if (!file || file.size === 0) return { success: false, error: "File belum dipilih." };
 
   const MAX_SIZE = 10 * 1024 * 1024; // 10MB
-  const ALLOWED_TYPES = ["application/pdf", "image/png", "image/jpeg"];
+  const ALLOWED_UPLOAD_TYPES = ["application/pdf", "image/png", "image/jpeg"];
   if (file.size > MAX_SIZE) return { success: false, error: "Ukuran file melebihi 10MB." };
-  if (!ALLOWED_TYPES.includes(file.type)) return { success: false, error: "Tipe file tidak didukung." };
+  if (!ALLOWED_UPLOAD_TYPES.includes(file.type)) return { success: false, error: "Tipe file tidak didukung." };
 
   const session = await auth();
   if (!session?.user?.id) return { success: false, error: "Sesi login tidak ditemukan." };
@@ -99,7 +113,7 @@ export async function uploadDocument(
 
     filePath = await saveFile(file);
 
-    const document = await db.$transaction(async (tx) => {
+    const document = await db.$transaction(async (tx: any) => {
       const doc = await tx.document.create({
         data: {
           title,
@@ -116,7 +130,7 @@ export async function uploadDocument(
           documentId: doc.id,
           versionNumber: "v1.0",
           filePath: filePath!,
-          uploadedById: session.user.id,
+          uploadedById: session?.user?.id ?? "",
         },
       });
 

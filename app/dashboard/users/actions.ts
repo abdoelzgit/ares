@@ -23,22 +23,49 @@ export async function verifyAdmin() {
 }
 
 export async function getUsers() {
-  const check = await verifyAdmin();
-  if (!check.authorized) return [];
+  const check = await verifyAdmin()
+  if (!check.authorized) return []
 
-  try {
-    return await db.user.findMany({
-      include: {
-        category: true,
+  const [users, roleDefaults] = await Promise.all([
+    db.user.findMany({
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        role: true,
+        categoryAccess: {
+          select: {
+            category: {
+              select: { id: true, code: true, name: true },
+            },
+          },
+        },
       },
-      orderBy: {
-        createdAt: "desc",
+      orderBy: { createdAt: 'desc' },
+    }),
+    db.roleCategoryAccess.findMany({
+      select: {
+        role: true,
+        category: {
+          select: { id: true, code: true, name: true },
+        },
       },
-    });
-  } catch (err) {
-    console.error("Error fetching users:", err);
-    return [];
-  }
+    }),
+  ])
+
+  // Map role -> daftar kategori default (dari RoleCategoryAccess)
+  const roleDefaultsMap = roleDefaults.reduce((acc, r) => {
+    if (!acc[r.role]) acc[r.role] = []
+    acc[r.role].push(r.category)
+    return acc
+  }, {} as Record<string, { id: string; code: string; name: string }[]>)
+
+  // Gabungkan: setiap user dapat field baru `defaultCategoryAccess`
+  // dan `categoryAccess` tetap berisi akses personal saja (tidak diubah)
+  return users.map((u) => ({
+    ...u,
+    defaultCategoryAccess: roleDefaultsMap[u.role] ?? [],
+  }))
 }
 
 export async function getCategories() {
@@ -65,7 +92,7 @@ export async function createUser(formData: FormData) {
   const email = (formData.get("email") as string)?.trim();
   const password = formData.get("password") as string;
   const role = formData.get("role") as UserRole;
-  const categoryId = formData.get("categoryId") as string | null;
+  const categoryIds=formData.getAll("categoryIds") as string[];
 
   if (!name || !email || !password || !role) {
     return { success: false, error: "Semua kolom wajib diisi." };
@@ -85,7 +112,11 @@ export async function createUser(formData: FormData) {
         email,
         password: hashedPassword,
         role,
-        categoryId: categoryId === "none" || !categoryId ? null : categoryId,
+        categoryAccess: {
+          create: categoryIds
+          .filter((id)=> id && id !== 'none')
+          .map((categoryId)=>({categoryId}))
+        },
       },
     });
 
@@ -98,40 +129,45 @@ export async function createUser(formData: FormData) {
 }
 
 export async function updateUser(
-  id: string,
+  userId: string,
   data: {
-    name: string;
-    email: string;
-    role: UserRole;
-    categoryId: string | null;
-    password?: string;
+    name: string
+    email: string
+    role: UserRole
+    categoryIds: string[]   // ganti dari categoryId: string | null
+    password?: string
   }
 ) {
-  const check = await verifyAdmin();
-  if (!check.authorized) return { success: false, error: check.error };
+  const check = await verifyAdmin()
+  if (!check.authorized) return { success: false, error: check.error }
 
   try {
-    const updateData: any = {
-      name: data.name.trim(),
-      email: data.email.trim(),
-      role: data.role,
-      categoryId: data.categoryId === "none" || !data.categoryId ? null : data.categoryId,
-    };
-
-    if (data.password && data.password.trim() !== "") {
-      updateData.password = await bcrypt.hash(data.password, 10);
+    const existingUser = await db.user.findFirst({
+      where: { email: data.email, NOT: { id: userId } },
+    })
+    if (existingUser) {
+      return { success: false, error: 'Email sudah digunakan pengguna lain.' }
     }
 
     await db.user.update({
-      where: { id },
-      data: updateData,
-    });
+      where: { id: userId },
+      data: {
+        name: data.name,
+        email: data.email,
+        role: data.role,
+        ...(data.password ? { password: await bcrypt.hash(data.password, 10) } : {}),
+        categoryAccess: {
+          deleteMany: {},   // hapus semua akses lama
+          create: data.categoryIds.map((categoryId) => ({ categoryId })),  // buat yang baru
+        },
+      },
+    })
 
-    revalidatePath("/dashboard/users");
-    return { success: true };
+    revalidatePath('/dashboard/users')
+    return { success: true }
   } catch (err: any) {
-    console.error("Error updating user:", err);
-    return { success: false, error: err.message || "Gagal memperbarui pengguna." };
+    console.error('Error updating user:', err)
+    return { success: false, error: err.message || 'Gagal memperbarui pengguna.' }
   }
 }
 

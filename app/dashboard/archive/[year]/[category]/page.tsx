@@ -1,6 +1,6 @@
 "use client"
 
-import { use, useState, useEffect, useTransition } from "react"
+import { use,useState, useEffect } from "react"
 import Link from "next/link"
 import {
   Breadcrumb,
@@ -36,11 +36,12 @@ import { Plus, Trash2, Edit, Download, Loader2 } from "lucide-react"
 import { ConfidentialityLevel } from "@prisma/client"
 
 interface PageProps {
-  params: Promise<{ year: string; category: string }>
+  params: { year: string; category: string }
 }
 
 export default function CategoryPage({ params }: PageProps) {
   const { year, category } = use(params)
+
   const [docs, setDocs] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [uploading, setUploading] = useState(false)

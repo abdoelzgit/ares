@@ -22,25 +22,52 @@ enum ConfidentialityLevel {
 }
 
 model Category {
-  id        String     @id @default(uuid()) @db.Uuid
-  code      String     @unique
-  name      String
-  createdAt DateTime   @default(now()) @map("created_at")
-  users     User[]
-  documents Document[]
+  id         String               @id @default(uuid()) @db.Uuid
+  code       String               @unique
+  name       String
+  createdAt  DateTime             @default(now()) @map("created_at")
+  documents  Document[]
+  roleAccess RoleCategoryAccess[]
+  userAccess UserCategoryAccess[]   // ← tambahkan baris ini
 
   @@map("categories")
 }
 
+// Menentukan role mana saja yang boleh mengakses kategori mana saja.
+// Tidak ada row untuk kombinasi role+category = LOCKED (default deny).
+model RoleCategoryAccess {
+  id         String   @id @default(uuid()) @db.Uuid
+  role       UserRole
+  categoryId String   @map("category_id") @db.Uuid
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  @@unique([role, categoryId])
+  @@index([role])
+  @@map("role_category_access")
+}
+
+model UserCategoryAccess {
+  id         String   @id @default(uuid()) @db.Uuid
+  userId     String   @map("user_id") @db.Uuid
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  categoryId String   @map("category_id") @db.Uuid
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  @@unique([userId, categoryId])
+  @@index([userId])
+  @@map("user_category_access")
+}
+
 model User {
-  id               String            @id @default(uuid()) @db.Uuid
+  id               String                @id @default(uuid()) @db.Uuid
   name             String
-  email            String            @unique
+  email            String                @unique
   password         String
   role             UserRole
-  categoryId       String?           @map("category_id") @db.Uuid
-  category         Category?         @relation(fields: [categoryId], references: [id])
-  createdAt        DateTime          @default(now()) @map("created_at")
+  categoryAccess   UserCategoryAccess[]  
+  createdAt        DateTime              @default(now()) @map("created_at")
   documentVersions DocumentVersion[]
 
   @@map("users")

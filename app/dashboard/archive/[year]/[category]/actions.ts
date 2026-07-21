@@ -1,7 +1,6 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
-import { ConfidentialityLevel } from "@prisma/client";
 import { mkdir, unlink, writeFile } from "fs/promises";
 import { join, extname } from "path";
 import { randomUUID } from "crypto";
@@ -86,15 +85,13 @@ export async function uploadDocument(
   schoolYear: string,
   categoryCode: string
 ) {
-  const title = (formData.get("title") as string)?.trim();
-  const documentNumber = (formData.get("documentNumber") as string)?.trim();
+   const formattedTitle = formData.get('formattedTitle') as string  // pakai yang sudah diformat
+  const documentNumber = formData.get('documentNumber') as string
   const description = formData.get("description") as string | null;
   const file = formData.get("file") as File;
-  const confidentiality =
-    (formData.get("confidentialityLevel") as ConfidentialityLevel) ??
-    ConfidentialityLevel.INTERNAL;
+ 
 
-  if (!title) return { success: false, error: "Judul wajib diisi." };
+  if (!formattedTitle) return { success: false, error: "Judul wajib diisi." };
   if (!documentNumber) return { success: false, error: "Nomor dokumen wajib diisi." };
   if (!file || file.size === 0) return { success: false, error: "File belum dipilih." };
 
@@ -116,11 +113,11 @@ export async function uploadDocument(
     const document = await db.$transaction(async (tx: any) => {
       const doc = await tx.document.create({
         data: {
-          title,
+          title: formattedTitle,
           description,
           schoolYear,
           documentNumber,
-          confidentialityLevel: confidentiality,
+        
           categoryId: category.id,
         },
       });
@@ -202,7 +199,6 @@ export async function updateDocument(
     title: string;
     description?: string;
     documentNumber?: string;
-    confidentialityLevel: ConfidentialityLevel;
   }
 ) {
   try {

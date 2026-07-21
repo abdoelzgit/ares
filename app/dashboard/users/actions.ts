@@ -54,18 +54,16 @@ export async function getUsers() {
   ])
 
   // Map role -> daftar kategori default (dari RoleCategoryAccess)
-  const roleDefaultsMap = roleDefaults.reduce((acc, r) => {
-    if (!acc[r.role]) acc[r.role] = []
-    acc[r.role].push(r.category)
-    return acc
-  }, {} as Record<string, { id: string; code: string; name: string }[]>)
+const roleDefaultsMap = roleDefaults.reduce((acc: Record<string, { id: string; code: string; name: string }[]>, r: { role: string; category: { id: string; code: string; name: string } }) => {
+  if (!acc[r.role]) acc[r.role] = []
+  acc[r.role].push(r.category)
+  return acc
+}, {} as Record<string, { id: string; code: string; name: string }[]>)
 
-  // Gabungkan: setiap user dapat field baru `defaultCategoryAccess`
-  // dan `categoryAccess` tetap berisi akses personal saja (tidak diubah)
-  return users.map((u) => ({
-    ...u,
-    defaultCategoryAccess: roleDefaultsMap[u.role] ?? [],
-  }))
+return users.map((u: { id: string; role: string; [key: string]: any }) => ({
+  ...u,
+  defaultCategoryAccess: roleDefaultsMap[u.role] ?? [],
+}))
 }
 
 export async function getCategories() {

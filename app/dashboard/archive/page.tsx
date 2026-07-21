@@ -42,12 +42,9 @@ export default function ArchiveDirectoryPage() {
           />
           <Breadcrumb>
             <BreadcrumbList>
+             
               <BreadcrumbItem>
-                <BreadcrumbLink href="/dashboard">SIAD-Sekolah</BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbSeparator />
-              <BreadcrumbItem>
-                <BreadcrumbPage>Historical Archive</BreadcrumbPage>
+                <BreadcrumbPage>Arsip</BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>

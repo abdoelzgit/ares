@@ -18,6 +18,14 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import {
   Dialog,
   DialogContent,
   DialogHeader,
@@ -148,22 +156,18 @@ export default function UsersSection() {
             <Separator orientation="vertical" className="mr-2 data-vertical:h-4 data-vertical:self-auto" />
             <Breadcrumb>
               <BreadcrumbList>
+
                 <BreadcrumbItem>
-                  <BreadcrumbLink href="/dashboard">SIAD-Sekolah</BreadcrumbLink>
-                </BreadcrumbItem>
-                <BreadcrumbSeparator />
-                <BreadcrumbItem>
-                  <BreadcrumbPage>Kelola Pengguna</BreadcrumbPage>
+                  <BreadcrumbPage>User</BreadcrumbPage>
                 </BreadcrumbItem>
               </BreadcrumbList>
             </Breadcrumb>
           </div>
-
-          {/* ADD USER DIALOG */}
+{/* ADD USER DIALOG */}
           <Dialog open={openAdd} onOpenChange={setOpenAdd}>
             <DialogTrigger
               render={
-                <Button size="sm" className="gap-1 bg-amber-600 hover:bg-amber-700 text-white">
+                <Button className="gap-1 p-4  bg-primary hover:bg-primary text-white">
                   <Plus className="h-4 w-4" /> Tambah Pengguna
                 </Button>
               }
@@ -172,26 +176,33 @@ export default function UsersSection() {
               <DialogHeader>
                 <DialogTitle>Tambah Pengguna Baru</DialogTitle>
               </DialogHeader>
-              <form onSubmit={handleCreate} className="space-y-4 pt-2">
-                <input name="name" placeholder="Nama" required />
-                <input name="email" type="email" placeholder="Email" required />
-                <input name="password" type="password" placeholder="Password" required />
+              <form onSubmit={handleCreate} className="space-y-2 pt-2">
+                <input className="border w-full rounded-sm p-1 " name="name" placeholder="Nama" required />
+                <div className="flex gap-2 w-full justify-between">
+                  
+                <input className="border w-full rounded-sm p-1 " name="email" type="email" placeholder="Email" required />
+                <input className="border rounded-sm p-1 w-full" name="password" type="password" placeholder="Password" required />
+                </div>
 
                 <div className="space-y-1">
                   <label className="text-xs font-semibold">Role Pengguna</label>
-                  <select
+                  <Select
                     name="role"
-                    className="w-full border rounded p-2 text-xs bg-background"
-                    defaultValue=""
+                    defaultValue=''
                   >
-                    <option value="" disabled>Pilih role</option>
-                    <option value="DIREKTUR">DIREKTUR</option>
-                    <option value="WAKASEK">WAKASEK</option>
-                    <option value="GURU">GURU</option>
-                    <option value="PEMBINA">PEMBINA</option>
-                    <option value="TU">TU</option>
-                    <option value="KEUANGAN">KEUANGAN</option>
-                  </select>
+                    <SelectTrigger className="w-full text-xs">
+                      <SelectValue placeholder="Pilih Role" />
+                    </SelectTrigger>
+
+                    <SelectContent>
+                      <SelectItem value="DIREKTUR">DIREKTUR</SelectItem>
+                      <SelectItem value="WAKASEK">WAKASEK</SelectItem>
+                      <SelectItem value="GURU">GURU</SelectItem>
+                      <SelectItem value="PEMBINA">PEMBINA</SelectItem>
+                      <SelectItem value="TU">TU</SelectItem>
+                      <SelectItem value="KEUANGAN">KEUANGAN</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
 
                 <CategoryBadgeSelect categories={categories} />
@@ -200,13 +211,14 @@ export default function UsersSection() {
                   <Button type="button" variant="outline" onClick={() => setOpenAdd(false)} disabled={submitting}>
                     Batal
                   </Button>
-                  <Button type="submit" className="bg-amber-600 hover:bg-amber-700 text-white" disabled={submitting}>
+                  <Button type="submit" className="bg-primary hover:bg-primary text-white" disabled={submitting}>
                     {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : "Simpan"}
                   </Button>
                 </div>
               </form>
             </DialogContent>
           </Dialog>
+          
         </div>
       </header>
 
@@ -223,7 +235,7 @@ export default function UsersSection() {
         </div>
 
         <Card>
-          <CardHeader className="py-4">
+          <CardHeader >
             <CardTitle className="font-heading text-base flex justify-between items-center">
               Daftar Pengguna Aktif
             </CardTitle>
@@ -231,6 +243,7 @@ export default function UsersSection() {
           <CardContent className="p-0">
             <Table>
               <TableHeader>
+                
                 <TableRow>
                   <TableHead className="pl-4">Nama Pengguna</TableHead>
                   <TableHead>Email</TableHead>
@@ -322,7 +335,9 @@ export default function UsersSection() {
                   })
                 )}
               </TableBody>
+              
             </Table>
+            
           </CardContent>
         </Card>
       </main>
@@ -350,18 +365,23 @@ export default function UsersSection() {
 
               <div className="space-y-1">
                 <label className="text-xs font-semibold">Role Pengguna</label>
-                <select
+                <Select
                   name="role"
-                  className="w-full border rounded p-2 text-xs bg-background"
                   defaultValue={editingUser.role}
                 >
-                  <option value="DIREKTUR">DIREKTUR</option>
-                  <option value="WAKASEK">WAKASEK</option>
-                  <option value="GURU">GURU</option>
-                  <option value="PEMBINA">PEMBINA</option>
-                  <option value="TU">TU</option>
-                  <option value="KEUANGAN">KEUANGAN</option>
-                </select>
+                  <SelectTrigger className="w-full text-xs">
+                    <SelectValue placeholder="Pilih Role" />
+                  </SelectTrigger>
+
+                  <SelectContent>
+                    <SelectItem value="DIREKTUR">DIREKTUR</SelectItem>
+                    <SelectItem value="WAKASEK">WAKASEK</SelectItem>
+                    <SelectItem value="GURU">GURU</SelectItem>
+                    <SelectItem value="PEMBINA">PEMBINA</SelectItem>
+                    <SelectItem value="TU">TU</SelectItem>
+                    <SelectItem value="KEUANGAN">KEUANGAN</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
 
               <CategoryBadgeSelect
@@ -373,7 +393,7 @@ export default function UsersSection() {
                 <Button type="button" variant="outline" onClick={() => setEditingUser(null)} disabled={submitting}>
                   Batal
                 </Button>
-                <Button type="submit" className="bg-amber-600 hover:bg-amber-700 text-white" disabled={submitting}>
+                <Button type="submit" className="bg-primary hover:bg-primary text-white" disabled={submitting}>
                   {submitting ? <Loader2 className="h-4 w-4 animate-spin" /> : "Simpan"}
                 </Button>
               </div>

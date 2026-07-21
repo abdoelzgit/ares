@@ -97,7 +97,7 @@ console.log('DEBUG categoriesWithAccess:', categoriesWithAccess.map(c => ({ code
               <BreadcrumbList>
                
                 <BreadcrumbItem>
-                  <BreadcrumbLink href="/dashboard/archive">Historical Archive</BreadcrumbLink>
+                  <BreadcrumbLink href="/dashboard/archive">Arsip</BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>

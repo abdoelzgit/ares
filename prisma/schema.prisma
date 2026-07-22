@@ -73,24 +73,38 @@ model User {
   @@map("users")
 }
 
+model ArchiveYear {
+  id        String     @id @default(uuid()) @db.Uuid
+  year      String     @unique
+  createdAt DateTime   @default(now()) @map("created_at")
+  documents Document[]
+  @@map("archive_years")
+}
+
 model Document {
   id                   String               @id @default(uuid()) @db.Uuid
   title                String
   documentNumber       String?              @map("document_number")
   categoryId           String               @map("category_id") @db.Uuid
   category             Category             @relation(fields: [categoryId], references: [id])
-  schoolYear           String               @map("school_year")
+
+  schoolYearId         String?               @map("school_year_id") @db.Uuid
+  schoolYear           ArchiveYear?          @relation(fields: [schoolYearId], references: [id])
+
   description          String?
   tags                 String[]             @default([])
   confidentialityLevel ConfidentialityLevel @default(INTERNAL) @map("confidentiality_level")
+
   currentVersionId     String?              @unique @map("current_version_id") @db.Uuid
   currentVersion       DocumentVersion?     @relation("CurrentVersion", fields: [currentVersionId], references: [id], onDelete: SetNull)
+
   versions             DocumentVersion[]    @relation("DocumentVersions")
+
   createdAt            DateTime             @default(now()) @map("created_at")
   updatedAt            DateTime             @updatedAt @map("updated_at")
 
   @@index([categoryId])
-  @@index([schoolYear])
+  @@index([schoolYearId])
   @@map("documents")
 }
 

@@ -46,7 +46,7 @@ import {
 import { getCurrentUser, getAccessibleCategoryIds } from '@/lib/rbac'
 import { prisma } from '@/lib/prisma'
 import { CategoryGrid } from "@/components/category-card"
-
+import { notFound } from "next/navigation"
 
 
 interface PageProps {
@@ -54,28 +54,28 @@ interface PageProps {
 }
 
 export default async function YearArchivePage({ params }: PageProps) {
-  const {year} = await params
-  const user = await getCurrentUser()
+const { year } = await params
+const user = await getCurrentUser()
 
-    const categories = await prisma.category.findMany()
-  const accessibleIds = await getAccessibleCategoryIds(user) // undefined = semua, string[] = terbatas
+const archiveYear = await prisma.archiveYear.findUnique({ where: { year } })
+if (!archiveYear) notFound()   // WAJIB, jangan di-comment — tahun tidak ada di DB = 404
 
+const categories = await prisma.category.findMany()
+const accessibleIds = await getAccessibleCategoryIds(user)
 
-  const docCounts = await prisma.document.groupBy({
-    by:['categoryId'],
-    where:{schoolYear: year},
-    _count: {id: true}
+const docCounts = await prisma.document.groupBy({
+  by: ['categoryId'],
+  where: { schoolYearId: archiveYear.id },   // sekarang aman, TypeScript tahu archiveYear pasti ada di titik ini
+  _count: { id: true },
+})
 
-  })
-  const countMap = new Map(docCounts.map((d) => [d.categoryId, d._count.id]))
+const countMap = new Map(docCounts.map((d) => [d.categoryId, d._count.id]))
 
-  const categoriesWithAccess = categories.map((cat) => ({
-    ...cat,
-    isLocked: accessibleIds !== undefined && !accessibleIds.includes(cat.id),
-    fileCount: countMap.get(cat.id) ?? 0,
-  }))
-
-  
+const categoriesWithAccess = categories.map((cat) => ({
+  ...cat,
+  isLocked: accessibleIds !== undefined && !accessibleIds.includes(cat.id),
+  fileCount: countMap.get(cat.id) ?? 0,
+}))
 // DEBUG — hapus setelah selesai
 console.log('DEBUG user:', { id: user.id, role: user.role, categoryIds: user.categoryIds })
 console.log('DEBUG accessibleIds:', accessibleIds)

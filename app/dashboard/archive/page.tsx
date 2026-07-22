@@ -1,14 +1,9 @@
-
-import * as React from "react"
 import Link from "next/link"
-
 import {
   Breadcrumb,
   BreadcrumbItem,
-  BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbPage,
-  BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
 import { Separator } from "@/components/ui/separator"
 import { SidebarTrigger } from "@/components/ui/sidebar"
@@ -16,19 +11,18 @@ import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/ca
 import {
   Folder,
   FolderArchive,
-  PlusIcon,
   Calendar,
   Layers,
   ArrowRight
 } from "lucide-react"
+// import { getArchiveYears } from "./actions"
 
-export default function ArchiveDirectoryPage() {
-  const archiveYears = [
-    { year: "2027", countLabel: "10 Folder", desc: "Tahun ajaran baru dengan folder bidang default" },
-    { year: "2026", countLabel: "3 Berkas", desc: "Arsip tahun berjalan yang sudah dipindahkan" },
-    { year: "2025", countLabel: "3 Berkas", desc: "Arsip lengkap tahun ajaran sebelumnya" },
-    { year: "2024", countLabel: "3 Berkas", desc: "Dokumen historis lawas sekolah" },
-  ]
+import { AddYearDialog } from "@/components/add-year-dialog"
+import { getArchiveYears } from "./action"
+
+
+export default async function ArchiveDirectoryPage() {
+  const archiveYears = await getArchiveYears()
 
   return (
     <>
@@ -42,7 +36,6 @@ export default function ArchiveDirectoryPage() {
           />
           <Breadcrumb>
             <BreadcrumbList>
-             
               <BreadcrumbItem>
                 <BreadcrumbPage>Arsip</BreadcrumbPage>
               </BreadcrumbItem>
@@ -72,17 +65,19 @@ export default function ArchiveDirectoryPage() {
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {archiveYears.map((yr) => {
-              return (
-                <Link href={`/dashboard/archive/${yr.year}`} key={yr.year} className="group">
-                  <Card
-                    className="relative overflow-hidden border-border/50 transition-all duration-300 hover:shadow-md hover:border-amber-500/50 bg-card hover:bg-amber-500/[0.02]"
-                  >
+            {archiveYears.length === 0 ? (
+              <div className="col-span-full text-center py-10 text-sm text-muted-foreground border border-dashed rounded-xl">
+                Belum ada tahun ajaran yang dibuat. Klik &quot;Tambah folder tahun ajaran baru&quot; di bawah untuk memulai.
+              </div>
+            ) : (
+              archiveYears.map((yr) => (
+                <Link href={`/dashboard/archive/${yr.year}`} key={yr.id} className="group">
+                  <Card className="relative overflow-hidden border-border/50 transition-all duration-300 hover:shadow-md hover:border-amber-500/50 bg-card hover:bg-amber-500/[0.02]">
                     <CardHeader className="p-6 flex flex-col gap-3">
                       <div className="flex justify-between items-start">
                         <Folder className="h-12 w-12 text-amber-500 fill-amber-500/10 group-hover:fill-amber-500/20 group-hover:scale-105 transition-all duration-300" />
                         <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-600 border border-amber-500/20">
-                          {yr.countLabel}
+                          {yr.categoryCount} Folder
                         </span>
                       </div>
                       <div className="flex flex-col gap-1 mt-2">
@@ -91,22 +86,16 @@ export default function ArchiveDirectoryPage() {
                           <ArrowRight className="h-4 w-4 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300 text-amber-500" />
                         </CardTitle>
                         <CardDescription className="text-xs leading-relaxed">
-                          {yr.desc}
+                          {yr.docCount} berkas dokumen tersimpan
                         </CardDescription>
                       </div>
                     </CardHeader>
                   </Card>
                 </Link>
-              )
-            })}
-            <Card className="h-48 border-border/50 overflow-hidden transition-all duration-300 hover:shadow-md hover:border-amber-500/50 bg-card hover:bg-amber-500/[0.02] flex items-center justify-center">
-              <div className="flex flex-col items-center gap-3 text-center">
-                <PlusIcon className="h-8 w-8 p-1 border-2 rounded-full text-gray-500" />
-                <p className="text-xs text-gray-500">
-                  Tambah folder tahun ajaran baru
-                </p>
-              </div>
-            </Card>
+              ))
+            )}
+
+            <AddYearDialog />
           </div>
         </section>
 
@@ -118,7 +107,7 @@ export default function ArchiveDirectoryPage() {
           </h3>
           <ul className="list-disc pl-4 text-muted-foreground space-y-1 text-[11px] leading-relaxed">
             <li>
-              Sistem memindahkan berkas di folder <strong>`Archive`</strong> secara otomatis ke **Cold Storage** (seperti AWS S3 Glacier / Cloudflare R2) jika berumur lebih dari 2 tahun untuk menghemat biaya operasional.
+              Sistem memindahkan berkas di folder <strong>Archive</strong> secara otomatis ke Cold Storage (seperti AWS S3 Glacier / Cloudflare R2) jika berumur lebih dari 2 tahun untuk menghemat biaya operasional.
             </li>
             <li>
               Meskipun berkas fisik dipindahkan ke Cold Storage, metadata berkas tetap terindeks dan dapat dicari sewaktu-waktu di aplikasi.

@@ -6,6 +6,7 @@ import { prisma as db } from "@/lib/prisma";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   ...authConfig,
+  trustHost: true,
   secret: process.env.AUTH_SECRET || "development-secret-key-at-least-32-characters-long",
   providers: [
     Credentials({

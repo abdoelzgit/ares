@@ -42,106 +42,112 @@ async function saveFile(file: File) {
 }
 
 
-export async function listDocumentsInCategoryAction(categoryCode: string, schoolYear: string) {
+export async function getDocuments(year: string, categoryCode: string) {
   const user = await getCurrentUser()
-  const categoryId = await resolveCategoryIdFromCode(categoryCode)
-  await assertCategoryAccess(user, categoryId)
+  
+  const [archiveYear, category] = await Promise.all([
+    prisma.archiveYear.findUnique({ where: { year } }),
+    prisma.category.findUnique({ where: { code: categoryCode } }),
+  ])
+
+  if (!archiveYear || !category) throw new Error('NOT_FOUND')
+
+  await assertCategoryAccess(user, category.id)
 
   return prisma.document.findMany({
-    where: { categoryId, schoolYear },
+    where: {
+      categoryId: category.id,
+      schoolYearId: archiveYear.id,
+    },
     include: { currentVersion: true },
     orderBy: { updatedAt: 'desc' },
   })
 }
 
-export async function getDocuments(
-  schoolYear: string,
-  categoryCode: string
-) {
-  try {
-    return await db.document.findMany({
-      where: {
-        schoolYear,
-        category: {
-          code: categoryCode,
-        },
-      },
-      include: {
-        category: true,
-        currentVersion: true,
-      },
-      orderBy: {
-        createdAt: "desc",
-      },
-    });
-  } catch (error) {
-    console.error("Error fetching documents:", error);
-    return [];
-  }
-}
+export async function listDocumentsInCategoryAction(categoryCode: string, year: string) {
+  const user = await getCurrentUser()
 
+  const [categoryId, archiveYear] = await Promise.all([
+    resolveCategoryIdFromCode(categoryCode),
+    prisma.archiveYear.findUnique({ where: { year } }),
+  ])
+
+  if (!archiveYear) throw new Error('NOT_FOUND')
+
+  await assertCategoryAccess(user, categoryId)
+
+  return prisma.document.findMany({
+    where: { categoryId, schoolYearId: archiveYear.id },
+    include: { currentVersion: true },
+    orderBy: { updatedAt: 'desc' },
+  })
+}
 export async function uploadDocument(
   formData: FormData,
   schoolYear: string,
   categoryCode: string
 ) {
-   const formattedTitle = formData.get('formattedTitle') as string  // pakai yang sudah diformat
+  const formattedTitle = formData.get('formattedTitle') as string
   const documentNumber = formData.get('documentNumber') as string
-  const description = formData.get("description") as string | null;
-  const file = formData.get("file") as File;
- 
+  const description = formData.get("description") as string | null
+  const file = formData.get("file") as File
 
-  if (!formattedTitle) return { success: false, error: "Judul wajib diisi." };
-  if (!documentNumber) return { success: false, error: "Nomor dokumen wajib diisi." };
-  if (!file || file.size === 0) return { success: false, error: "File belum dipilih." };
+  if (!formattedTitle) return { success: false, error: "Judul wajib diisi." }
+  if (!documentNumber) return { success: false, error: "Nomor dokumen wajib diisi." }
+  if (!file || file.size === 0) return { success: false, error: "File belum dipilih." }
 
-  const MAX_SIZE = 10 * 1024 * 1024; // 10MB
-  const ALLOWED_UPLOAD_TYPES = ["application/pdf", "image/png", "image/jpeg"];
-  if (file.size > MAX_SIZE) return { success: false, error: "Ukuran file melebihi 10MB." };
-  if (!ALLOWED_UPLOAD_TYPES.includes(file.type)) return { success: false, error: "Tipe file tidak didukung." };
+  const MAX_SIZE = 10 * 1024 * 1024
+  const ALLOWED_UPLOAD_TYPES = ["application/pdf", "image/png", "image/jpeg"]
+  if (file.size > MAX_SIZE) return { success: false, error: "Ukuran file melebihi 10MB." }
+  if (!ALLOWED_UPLOAD_TYPES.includes(file.type)) return { success: false, error: "Tipe file tidak didukung." }
 
-  const session = await auth();
-  if (!session?.user?.id) return { success: false, error: "Sesi login tidak ditemukan." };
+  const session = await auth()
+  if (!session?.user?.id) return { success: false, error: "Sesi login tidak ditemukan." }
 
-  let filePath: string | null = null;
+  let filePath: string | null = null
   try {
-    const category = await db.category.findUnique({ where: { code: categoryCode } });
-    if (!category) return { success: false, error: "Kategori tidak ditemukan." };
+    // Resolve KEDUA foreign key sebelum masuk transaksi
+    const [category, archiveYear] = await Promise.all([
+      db.category.findUnique({ where: { code: categoryCode } }),
+      db.archiveYear.findUnique({ where: { year: schoolYear } }),
+    ])
 
-    filePath = await saveFile(file);
+    if (!category) return { success: false, error: "Kategori tidak ditemukan." }
+    if (!archiveYear) return { success: false, error: "Tahun ajaran tidak ditemukan." }
+
+    filePath = await saveFile(file)
 
     const document = await db.$transaction(async (tx: any) => {
       const doc = await tx.document.create({
         data: {
           title: formattedTitle,
           description,
-          schoolYear,
+          schoolYearId: archiveYear.id,   // ganti dari schoolYear (string) ke schoolYearId (FK)
           documentNumber,
-        
           categoryId: category.id,
         },
-      });
+      })
 
       const version = await tx.documentVersion.create({
         data: {
           documentId: doc.id,
           versionNumber: "v1.0",
           filePath: filePath!,
-          uploadedById: session?.user?.id ?? "",
+          uploadedById: session?.user?.id ?? "",   // sudah pasti ada, tidak perlu fallback ""
         },
-      });
+      })
 
       return tx.document.update({
         where: { id: doc.id },
         data: { currentVersionId: version.id },
-      });
-    });
+      })
+    })
 
-    revalidatePath(`/dashboard/archive/${schoolYear}/${categoryCode}`);
-    return { success: true, data: document };
+    revalidatePath(`/dashboard/archive/${schoolYear}/${categoryCode}`)
+    return { success: true, data: document }
   } catch (err: any) {
-    if (filePath) await unlink(join(process.cwd(), "public", filePath)).catch(() => {});
-    return { success: false, error: err.message || "Gagal mengunggah dokumen" };
+    if (filePath) await unlink(join(process.cwd(), "public", filePath)).catch(() => {})
+    return { success: false, error: err.message || "Gagal mengunggah dokumen" }
   }
 }
 

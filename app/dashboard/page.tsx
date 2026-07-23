@@ -61,7 +61,6 @@ import {
 DashboardDocuments
 import { DocumentTable } from "@/components/document-table"
 import { DashboardDocuments } from "./document-dashboard"
-// import { DashboardStats } from "./document-stats"
 
 // Types matching the PRD
 type UserRole = 'DIREKTUR' | 'WAKASEK' | 'GURU' | 'PEMBINA' | 'TU' | 'KEUANGAN'

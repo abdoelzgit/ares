@@ -34,6 +34,7 @@ export function AddYearDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger
+      nativeButton={false}
         render={
           <Card className="h-48 border-border/50 overflow-hidden transition-all duration-300 hover:shadow-md hover:border-amber-500/50 bg-card hover:bg-amber-500/[0.02] flex items-center justify-center cursor-pointer">
             <div className="flex flex-col items-center gap-3 text-center">

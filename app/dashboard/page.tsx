@@ -12,11 +12,13 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
 import { Separator } from "@/components/ui/separator"
+
 import { SidebarTrigger } from "@/components/ui/sidebar"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
+
 import {
   Table,
   TableBody,
@@ -41,21 +43,25 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { 
-  Search, 
-  FileText, 
-  ShieldAlert, 
-  Clock, 
-  Archive, 
-  UserCheck, 
-  Lock, 
-  Unlock, 
-  Eye, 
-  FileDown, 
-  UploadCloud, 
+import {
+  Search,
+  FileText,
+  ShieldAlert,
+  Clock,
+  Archive,
+  UserCheck,
+  Lock,
+  Unlock,
+  Eye,
+  FileDown,
+  UploadCloud,
   FolderOpen,
   AlertCircle
 } from "lucide-react"
+DashboardDocuments
+import { DocumentTable } from "@/components/document-table"
+import { DashboardDocuments } from "./document-dashboard"
+// import { DashboardStats } from "./document-stats"
 
 // Types matching the PRD
 type UserRole = 'DIREKTUR' | 'WAKASEK' | 'GURU' | 'PEMBINA' | 'TU' | 'KEUANGAN'
@@ -188,7 +194,7 @@ export default function Page() {
   // PRD Access Control Matrix logic (Section 3)
   const getAccessLevel = (role: UserRole, category: DocCategory): AccessLevel => {
     if (role === 'DIREKTUR') return 'FULL'
-    
+
     switch (role) {
       case 'WAKASEK':
         return category === 'STU' ? 'FULL' : 'LOCKED' // Simulation restricted to STU for demo
@@ -214,14 +220,14 @@ export default function Page() {
     }
 
     // 2. Search query (FTS simulation)
-    const matchesSearch = 
+    const matchesSearch =
       doc.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       doc.documentNumber.toLowerCase().includes(searchQuery.toLowerCase()) ||
       doc.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
       doc.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
 
     // 3. Tab active/archive
-    const matchesTab = 
+    const matchesTab =
       activeTab === 'ALL' ||
       (activeTab === 'ACTIVE' && !doc.isArchive) ||
       (activeTab === 'ARCHIVE' && doc.isArchive)
@@ -240,22 +246,22 @@ export default function Page() {
       <header className="flex h-16 shrink-0 items-center justify-between gap-2 border-b px-4 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12 bg-background/95 backdrop-blur">
         <div className="flex items-center gap-2">
           <SidebarTrigger className="-ml-1" />
-            <Separator
-              orientation="vertical"
-              className="mr-2 data-vertical:h-4 data-vertical:self-auto"
-            />
-            <Breadcrumb>
-              <BreadcrumbList>
-                <BreadcrumbItem>
-                  <BreadcrumbPage>Dashboard</BreadcrumbPage>
-                </BreadcrumbItem>
-              </BreadcrumbList>
-            </Breadcrumb>
-          </div>
+          <Separator
+            orientation="vertical"
+            className="mr-2 data-vertical:h-4 data-vertical:self-auto"
+          />
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbPage>Dashboard</BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+        </div>
 
-          {/* SIMULATION ROLE SWITCHER (Signature Element) */}
-          <div className="flex items-center gap-3">
-            {/* <Select value={selectedRole} onValueChange={(val) => setSelectedRole(val as UserRole)}>
+        {/* SIMULATION ROLE SWITCHER (Signature Element) */}
+        <div className="flex items-center gap-3">
+          {/* <Select value={selectedRole} onValueChange={(val) => setSelectedRole(val as UserRole)}>
               <SelectTrigger className="w-[180px] h-9 text-xs font-medium">
                 <SelectValue placeholder="Pilih Peran" />
               </SelectTrigger>
@@ -268,239 +274,75 @@ export default function Page() {
                 <SelectItem value="KEUANGAN">Keuangan</SelectItem>
               </SelectContent>
             </Select> */}
-          </div>
-        </header>
+        </div>
+      </header>
 
-        {/* MAIN DASHBOARD CONTENT */}
-        <main className="flex flex-1 flex-col gap-6 p-6 overflow-y-auto">
-          {/* STATS OVERVIEW CARDS */}
-          <section className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-            <Card className="overflow-hidden border-border/60 shadow-sm hover:shadow transition-all duration-200">
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Total Dokumen</CardTitle>
-                <FileText className="h-4 w-4 text-primary" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold font-heading text-primary">{totalDocs}</div>
-                <p className="text-xs text-muted-foreground mt-1">Berkas terdaftar di database</p>
-              </CardContent>
-            </Card>
+      {/* MAIN DASHBOARD CONTENT */}
+      <main className="flex flex-1 flex-col gap-6 p-6 overflow-y-auto">
+        {/* STATS OVERVIEW CARDS */}
+        {/* <DashboardStats></DashboardStats  > */}
+        <section className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+          <Card className="overflow-hidden border-border/60 shadow-sm hover:shadow transition-all duration-200">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Total Dokumen</CardTitle>
+              <FileText className="h-4 w-4 text-primary" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold font-heading text-primary">{totalDocs}</div>
+              <p className="text-xs text-muted-foreground mt-1">Berkas terdaftar di database</p>
+            </CardContent>
+          </Card>
 
-            <Card className="overflow-hidden border-border/60 shadow-sm hover:shadow transition-all duration-200">
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Dokumen Aktif</CardTitle>
-                <Clock className="h-4 w-4 text-green-600" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold font-heading text-green-600">{activeDocsCount}</div>
-                <p className="text-xs text-muted-foreground mt-1">Versi aktif yang dapat digunakan</p>
-              </CardContent>
-            </Card>
+          <Card className="overflow-hidden border-border/60 shadow-sm hover:shadow transition-all duration-200">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Dokumen Aktif</CardTitle>
+              <Clock className="h-4 w-4 text-green-600" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold font-heading text-green-600">{activeDocsCount}</div>
+              <p className="text-xs text-muted-foreground mt-1">Versi aktif yang dapat digunakan</p>
+            </CardContent>
+          </Card>
 
-            <Card className="overflow-hidden border-border/60 shadow-sm hover:shadow transition-all duration-200">
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Arsip Lama</CardTitle>
-                <Archive className="h-4 w-4 text-amber-600" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold font-heading text-amber-600">{archivedDocsCount}</div>
-                <p className="text-xs text-muted-foreground mt-1">Dipindahkan ke folder /Archive/</p>
-              </CardContent>
-            </Card>
+          <Card className="overflow-hidden border-border/60 shadow-sm hover:shadow transition-all duration-200">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Arsip Lama</CardTitle>
+              <Archive className="h-4 w-4 text-amber-600" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold font-heading text-amber-600">{archivedDocsCount}</div>
+              <p className="text-xs text-muted-foreground mt-1">Dipindahkan ke folder /Archive/</p>
+            </CardContent>
+          </Card>
 
-            <Card className="overflow-hidden border-border/60 shadow-sm hover:shadow transition-all duration-200">
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Evaluasi Semester</CardTitle>
-                <ShieldAlert className="h-4 w-4 text-red-600 animate-pulse" />
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold font-heading text-red-600">1</div>
-                <p className="text-xs text-muted-foreground mt-1">Perlu review validasi dokumen</p>
-              </CardContent>
-            </Card>
-          </section>
+          <Card className="overflow-hidden border-border/60 shadow-sm hover:shadow transition-all duration-200">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Evaluasi Semester</CardTitle>
+              <ShieldAlert className="h-4 w-4 text-red-600 animate-pulse" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold font-heading text-red-600">1</div>
+              <p className="text-xs text-muted-foreground mt-1">Perlu review validasi dokumen</p>
+            </CardContent>
+          </Card>
+        </section>
 
-          {/* SCANNER / CABINETS SECTION */}
-          <section className="space-y-3">
-            <div className="flex flex-col gap-1">
-              <h2 className="text-lg font-bold font-heading tracking-tight flex items-center gap-2">
-                <FolderOpen className="h-5 w-5 text-primary" />
-                Lemari Arsip Bidang (10 Bidang)
-              </h2>
-              <p className="text-xs text-muted-foreground">
-                Akses lemari bidang secara logis sesuai dengan peran simulasi Anda saat ini.
-              </p>
-            </div>
+        {/* SCANNER / CABINETS SECTION */}
+        <section className="space-y-3">
+    
 
-            
 
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4  ">
-              {categories.map((cat) => {
-                const access = getAccessLevel(selectedRole, cat.code)
-                const isLocked = access === 'LOCKED'
 
-                return (
-                  <Link key={cat.code} href={`/dashboard/${cat.code}`} className="block">
-                    <Card 
-                      className={`relative overflow-hidden border-border/50 h-[100px] transition-all duration-200 ${
-                        isLocked ? 'bg-muted/30 border-muted opacity-80' : 'bg-card border-l-4 border-l-primary hover:translate-y-[-2px] shadow-sm'
-                      }`}
-                    >
-                      <CardHeader className="p-4 pb-2">
-                        <div className="flex justify-between items-start">
-                          <span className="text-2xl font-extrabold font-heading text-foreground/80 tracking-wide">
-                            {cat.code}
-                          </span>
-                          {/* <Badge 
-                            variant={isLocked ? "destructive" : "default"} 
-                            className="px-1.5 py-0.5 text-[9px] font-semibold tracking-wider uppercase"
-                          >
-                            {isLocked ? (
-                              <span className="flex items-center gap-1"><Lock className="h-2.5 w-2.5" /> Terkunci</span>
-                            ) : (
-                              <span className="flex items-center gap-1"><Unlock className="h-2.5 w-2.5" /> Akses</span>
-                            )}
-                          </Badge> */}
-                        </div>
-                        <CardTitle className="text-sm font-bold mt-1 text-foreground/90">{cat.name}</CardTitle>
-                      </CardHeader>
-                      <CardContent className="p-4 pt-0 text-xs">
-                        <p className="text-[10px] text-muted-foreground leading-relaxed mt-1">
-                          <strong className="text-foreground/70">PIC:</strong> {cat.pic}
-                        </p>
-                        <p className="text-[10px] text-muted-foreground leading-relaxed mt-1">
-                          <strong className="text-foreground/70">Berkas:</strong> {cat.example}
-                        </p>
-                      </CardContent>
-                    </Card>
-                  </Link>
-                )
-              })}
-            </div>
-          </section>
+        
+      <DashboardDocuments />
+        </section>
 
-          {/* SEARCH & DOCUMENTS LIST */}
-          <section className="">
-            {/* LEFT: Search, Filters & Actions */}
-         
+        {/* SEARCH & DOCUMENTS LIST */}
+        <section className="">
+          {/* LEFT: Search, Filters & Actions */}
 
-            {/* RIGHT: Documents Table */}
-            <div className="">
-              <Card className="shadow-sm h-full">
-                <CardHeader className="pb-2">
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <CardTitle className="text-sm font-bold">Daftar Dokumen Terbaru</CardTitle>
-                      <CardDescription className="text-xs">Hasil pencarian berdasarkan filter peran saat ini.</CardDescription>
-                    </div>
-                    <Badge variant="outline" className="text-[10px] px-2 py-0.5">
-                      {filteredDocs.length} Berkas Ditemukan
-                    </Badge>
-                  </div>
-                  {/* Search bar */}
-                  <div className="relative">
-                    <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
-                    <Input
-                      placeholder="Cari judul, No. Surat, tag..."
-                      className="pl-9 text-xs"
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                    />
-                  </div>
-
-                  {/* Filter Status tabs */}
-                  <div className="flex gap-1.5 p-1 bg-muted rounded-lg text-xs font-semibold">
-                    <button
-                      onClick={() => setActiveTab('ALL')}
-                      className={`flex-1 py-1.5 rounded-md text-center transition-all ${
-                        activeTab === 'ALL' ? 'bg-background shadow-sm text-foreground' : 'text-muted-foreground'
-                      }`}
-                    >
-                      Semua
-                    </button>
-                    <button
-                      onClick={() => setActiveTab('ACTIVE')}
-                      className={`flex-1 py-1.5 rounded-md text-center transition-all ${
-                        activeTab === 'ACTIVE' ? 'bg-background shadow-sm text-foreground' : 'text-muted-foreground'
-                      }`}
-                    >
-                      Aktif
-                    </button>
-                    <button
-                      onClick={() => setActiveTab('ARCHIVE')}
-                      className={`flex-1 py-1.5 rounded-md text-center transition-all ${
-                        activeTab === 'ARCHIVE' ? 'bg-background shadow-sm text-foreground' : 'text-muted-foreground'
-                      }`}
-                    >
-                      Arsip
-                    </button>
-                  </div>
-                </CardHeader>
-                <CardContent className="p-0">
-                  <div className="overflow-x-auto">
-                    <Table>
-                      <TableHeader>
-                        <TableRow className="hover:bg-transparent">
-                          <TableHead className="text-xs font-bold pl-4">Dokumen</TableHead>
-                          <TableHead className="text-xs font-bold w-[80px]">Bidang</TableHead>
-                          <TableHead className="text-xs font-bold w-[70px]">Versi</TableHead>
-                          <TableHead className="text-xs font-bold w-[120px]">Kerahasiaan</TableHead>
-                          <TableHead className="text-xs font-bold w-[80px] text-right pr-4">Aksi</TableHead>
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody className="text-xs">
-                        {filteredDocs.length === 0 ? (
-                          <TableRow>
-                            <TableCell colSpan={5} className="text-center py-10 text-muted-foreground text-xs">
-                              Tidak ada dokumen yang ditemukan atau Anda tidak memiliki hak akses terhadap berkas tersebut.
-                            </TableCell>
-                          </TableRow>
-                        ) : (
-                          filteredDocs.map((doc) => (
-                            <TableRow key={doc.id} className="hover:bg-muted/50 transition-colors">
-                              <TableCell className="pl-4 py-3">
-                                <div className="font-semibold text-foreground/90">{doc.title}</div>
-                                <div className="text-[10px] text-muted-foreground mt-0.5 flex gap-2">
-                                  <span>No: {doc.documentNumber}</span>
-                                  <span>•</span>
-                                  <span>T.A: {doc.schoolYear}</span>
-                                </div>
-                              </TableCell>
-                              <TableCell>
-                                <Badge variant="secondary" className="text-[10px] font-bold">
-                                  {doc.category}
-                                </Badge>
-                              </TableCell>
-                              <TableCell className="font-medium font-heading text-muted-foreground">
-                                {doc.version}
-                              </TableCell>
-                              <TableCell>
-                                <Badge 
-                                  variant={
-                                    doc.confidentialityLevel === 'CONFIDENTIAL' ? 'destructive' :
-                                    doc.confidentialityLevel === 'INTERNAL' ? 'outline' : 'secondary'
-                                  }
-                                  className="text-[9px] font-semibold uppercase tracking-wider"
-                                >
-                                  {doc.confidentialityLevel}
-                                </Badge>
-                              </TableCell>
-                              <TableCell className="text-right pr-4">
-                                <Button size="sm" variant="ghost" className="h-7 w-7 p-0" title="Buka Detail">
-                                  <Eye className="h-4 w-4" />
-                                </Button>
-                              </TableCell>
-                            </TableRow>
-                          ))
-                        )}
-                      </TableBody>
-                    </Table>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          </section>
-        </main>
+        </section>
+      </main>
     </>
   )
 }

@@ -1,24 +1,20 @@
-// middleware.ts (di root project, sejajar dengan package.json)
-import { auth } from '@/auth'
+// middleware.ts
+import NextAuth from 'next-auth'
+import { authConfig } from './auth.config'
 import { NextResponse } from 'next/server'
+
+const { auth } = NextAuth(authConfig)   // instance ringan, TANPA provider Credentials/bcrypt/Prisma
 
 export default auth((req) => {
   const isLoggedIn = !!req.auth
   const { pathname } = req.nextUrl
 
   const isAuthPage = pathname.startsWith('/login')
-  const isPublicAsset = pathname.startsWith('/_next') || pathname.startsWith('/api/auth')
 
-  if (isPublicAsset) {
-    return NextResponse.next()
-  }
-
-  // Sudah login tapi buka /login → lempar ke dashboard
   if (isLoggedIn && isAuthPage) {
     return NextResponse.redirect(new URL('/dashboard', req.url))
   }
 
-  // Belum login dan buka halaman selain /login → lempar ke login
   if (!isLoggedIn && !isAuthPage) {
     return NextResponse.redirect(new URL('/login', req.url))
   }
@@ -28,7 +24,6 @@ export default auth((req) => {
 
 export const config = {
   matcher: [
-    // Jalankan middleware di semua route KECUALI file statis dan API auth
     '/((?!_next/static|_next/image|favicon.ico|api/auth).*)',
   ],
 }

@@ -4,11 +4,12 @@ module.exports = {
       name: "ares",
       script: "npm",
       args: "start",
-      cwd: "/home/azis/ares",       // sesuaikan path project Anda
-      instances: 1,
+      cwd: "/home/azis/ares",
+      exec_mode: "fork",        // WAJIB tambahkan ini, eksplisit paksa fork bukan cluster
+      instances: 1,             // pastikan cuma 1 instance
       autorestart: true,
-      watch: false,                 // jangan aktifkan watch di production, cukup restart manual setelah build
-      max_memory_restart: "500M",   // restart otomatis kalau memori membengkak
+      watch: false,
+      max_memory_restart: "500M",
       env: {
         NODE_ENV: "production",
         PORT: 3000,

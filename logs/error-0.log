@@ -508,3 +508,238 @@
 2026-07-28 07:59:34:     at async j (.next/server/chunks/ssr/[root-of-the-server]__1mfjzxk._.js:1:21682) {
 2026-07-28 07:59:34:   digest: '3294025438'
 2026-07-28 07:59:34: }
+2026-07-28 08:08:59: ⨯ Error: UNAUTHORIZED
+2026-07-28 08:08:59:     at <unknown> (.next/server/chunks/ssr/[root-of-the-server]__1mfjzxk._.js:1:846)
+2026-07-28 08:08:59:     at async j (.next/server/chunks/ssr/[root-of-the-server]__1mfjzxk._.js:1:21682) {
+2026-07-28 08:08:59:   digest: '3294025438'
+2026-07-28 08:08:59: }
+2026-07-28 08:09:02: ⨯ Error: UNAUTHORIZED
+2026-07-28 08:09:02:     at <unknown> (.next/server/chunks/ssr/[root-of-the-server]__1mfjzxk._.js:1:846)
+2026-07-28 08:09:02:     at async j (.next/server/chunks/ssr/[root-of-the-server]__1mfjzxk._.js:1:21682) {
+2026-07-28 08:09:02:   digest: '3294025438'
+2026-07-28 08:09:02: }
+2026-07-28 08:09:03: ⨯ Error: UNAUTHORIZED
+2026-07-28 08:09:03:     at <unknown> (.next/server/chunks/ssr/[root-of-the-server]__1mfjzxk._.js:1:846)
+2026-07-28 08:09:03:     at async j (.next/server/chunks/ssr/[root-of-the-server]__1mfjzxk._.js:1:21682) {
+2026-07-28 08:09:03:   digest: '3294025438'
+2026-07-28 08:09:03: }
+2026-07-28 08:11:28: ⨯ Error: UNAUTHORIZED
+2026-07-28 08:11:28:     at <unknown> (.next/server/chunks/ssr/[root-of-the-server]__0ypxldg._.js:1:1151)
+2026-07-28 08:11:28:     at async j (.next/server/chunks/ssr/[root-of-the-server]__0ypxldg._.js:1:21987) {
+2026-07-28 08:11:28:   digest: '2066574986'
+2026-07-28 08:11:28: }
+2026-07-28 08:11:33: ⨯ Error: UNAUTHORIZED
+2026-07-28 08:11:33:     at <unknown> (.next/server/chunks/ssr/[root-of-the-server]__0ypxldg._.js:1:1151)
+2026-07-28 08:11:33:     at async j (.next/server/chunks/ssr/[root-of-the-server]__0ypxldg._.js:1:21987) {
+2026-07-28 08:11:33:   digest: '2066574986'
+2026-07-28 08:11:33: }
+2026-07-28 08:11:35: ⨯ Error: UNAUTHORIZED
+2026-07-28 08:11:35:     at <unknown> (.next/server/chunks/ssr/[root-of-the-server]__0ypxldg._.js:1:1151)
+2026-07-28 08:11:35:     at async j (.next/server/chunks/ssr/[root-of-the-server]__0ypxldg._.js:1:21987) {
+2026-07-28 08:11:35:   digest: '2066574986'
+2026-07-28 08:11:35: }
+2026-07-28 08:11:44: ⨯ Error: UNAUTHORIZED
+2026-07-28 08:11:44:     at <unknown> (.next/server/chunks/ssr/[root-of-the-server]__0ypxldg._.js:1:1151)
+2026-07-28 08:11:44:     at async j (.next/server/chunks/ssr/[root-of-the-server]__0ypxldg._.js:1:21987) {
+2026-07-28 08:11:44:   digest: '2066574986'
+2026-07-28 08:11:44: }
+2026-07-28 08:11:45: ⨯ Error: UNAUTHORIZED
+2026-07-28 08:11:45:     at <unknown> (.next/server/chunks/ssr/[root-of-the-server]__0ypxldg._.js:1:1151)
+2026-07-28 08:11:45:     at async j (.next/server/chunks/ssr/[root-of-the-server]__0ypxldg._.js:1:21987) {
+2026-07-28 08:11:45:   digest: '2066574986'
+2026-07-28 08:11:45: }
+2026-07-28 08:11:46: ⨯ Error: UNAUTHORIZED
+2026-07-28 08:11:46:     at <unknown> (.next/server/chunks/ssr/[root-of-the-server]__0ypxldg._.js:1:1151)
+2026-07-28 08:11:46:     at async j (.next/server/chunks/ssr/[root-of-the-server]__0ypxldg._.js:1:21987) {
+2026-07-28 08:11:46:   digest: '2066574986'
+2026-07-28 08:11:46: }
+2026-07-28 08:11:46: ⨯ Error: UNAUTHORIZED
+2026-07-28 08:11:46:     at <unknown> (.next/server/chunks/ssr/[root-of-the-server]__0ypxldg._.js:1:1151)
+2026-07-28 08:11:46:     at async j (.next/server/chunks/ssr/[root-of-the-server]__0ypxldg._.js:1:21987) {
+2026-07-28 08:11:46:   digest: '2066574986'
+2026-07-28 08:11:46: }
+2026-07-28 08:11:47: ⨯ Error: UNAUTHORIZED
+2026-07-28 08:11:47:     at <unknown> (.next/server/chunks/ssr/[root-of-the-server]__0ypxldg._.js:1:1151)
+2026-07-28 08:11:47:     at async j (.next/server/chunks/ssr/[root-of-the-server]__0ypxldg._.js:1:21987) {
+2026-07-28 08:11:47:   digest: '2066574986'
+2026-07-28 08:11:47: }
+2026-07-28 08:11:58: ⨯ Error: UNAUTHORIZED
+2026-07-28 08:11:58:     at <unknown> (.next/server/chunks/ssr/[root-of-the-server]__0ypxldg._.js:1:1151)
+2026-07-28 08:11:58:     at async j (.next/server/chunks/ssr/[root-of-the-server]__0ypxldg._.js:1:21987) {
+2026-07-28 08:11:58:   digest: '2066574986'
+2026-07-28 08:11:58: }
+2026-07-28 08:12:04: ⨯ Error: UNAUTHORIZED
+2026-07-28 08:12:04:     at <unknown> (.next/server/chunks/ssr/[root-of-the-server]__0ypxldg._.js:1:1151)
+2026-07-28 08:12:04:     at async j (.next/server/chunks/ssr/[root-of-the-server]__0ypxldg._.js:1:21987) {
+2026-07-28 08:12:04:   digest: '2066574986'
+2026-07-28 08:12:04: }
+2026-07-28 08:12:08: ⨯ Error: UNAUTHORIZED
+2026-07-28 08:12:08:     at <unknown> (.next/server/chunks/ssr/[root-of-the-server]__0ypxldg._.js:1:1151)
+2026-07-28 08:12:08:     at async j (.next/server/chunks/ssr/[root-of-the-server]__0ypxldg._.js:1:21987) {
+2026-07-28 08:12:08:   digest: '2066574986'
+2026-07-28 08:12:08: }
+2026-07-29 06:06:29: [31m[auth][error][0m CredentialsSignin: Read more at https://errors.authjs.dev#credentialssignin
+2026-07-29 06:06:29:     at iv (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:40971)
+2026-07-29 06:06:29:     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+2026-07-29 06:06:29:     at async iP (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:50551)
+2026-07-29 06:06:29:     at async iU (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:54801)
+2026-07-29 06:06:29:     at async rJ.do (/home/azis/ares/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js:5:20930)
+2026-07-29 06:06:29:     at async rJ.handle (/home/azis/ares/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js:5:25785)
+2026-07-29 06:06:29:     at async l (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:83842)
+2026-07-29 06:06:29:     at async rJ.handleResponse (/home/azis/ares/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js:1:119701)
+2026-07-29 06:06:29:     at async c (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:84883)
+2026-07-29 06:06:29:     at async Module.E [as handler] (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:85990)
+2026-07-29 06:06:30: [31m[auth][error][0m CredentialsSignin: Read more at https://errors.authjs.dev#credentialssignin
+2026-07-29 06:06:30:     at iv (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:40971)
+2026-07-29 06:06:30:     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+2026-07-29 06:06:30:     at async iP (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:50551)
+2026-07-29 06:06:30:     at async iU (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:54801)
+2026-07-29 06:06:30:     at async rJ.do (/home/azis/ares/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js:5:20930)
+2026-07-29 06:06:30:     at async rJ.handle (/home/azis/ares/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js:5:25785)
+2026-07-29 06:06:30:     at async l (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:83842)
+2026-07-29 06:06:30:     at async rJ.handleResponse (/home/azis/ares/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js:1:119701)
+2026-07-29 06:06:30:     at async c (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:84883)
+2026-07-29 06:06:30:     at async Module.E [as handler] (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:85990)
+2026-07-29 06:06:31: [31m[auth][error][0m CredentialsSignin: Read more at https://errors.authjs.dev#credentialssignin
+2026-07-29 06:06:31:     at iv (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:40971)
+2026-07-29 06:06:31:     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+2026-07-29 06:06:31:     at async iP (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:50551)
+2026-07-29 06:06:31:     at async iU (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:54801)
+2026-07-29 06:06:31:     at async rJ.do (/home/azis/ares/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js:5:20930)
+2026-07-29 06:06:31:     at async rJ.handle (/home/azis/ares/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js:5:25785)
+2026-07-29 06:06:31:     at async l (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:83842)
+2026-07-29 06:06:31:     at async rJ.handleResponse (/home/azis/ares/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js:1:119701)
+2026-07-29 06:06:31:     at async c (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:84883)
+2026-07-29 06:06:31:     at async Module.E [as handler] (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:85990)
+2026-07-29 06:06:54: [31m[auth][error][0m CredentialsSignin: Read more at https://errors.authjs.dev#credentialssignin
+2026-07-29 06:06:54:     at iv (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:40971)
+2026-07-29 06:06:54:     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+2026-07-29 06:06:54:     at async iP (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:50551)
+2026-07-29 06:06:54:     at async iU (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:54801)
+2026-07-29 06:06:54:     at async rJ.do (/home/azis/ares/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js:5:20930)
+2026-07-29 06:06:54:     at async rJ.handle (/home/azis/ares/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js:5:25785)
+2026-07-29 06:06:54:     at async l (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:83842)
+2026-07-29 06:06:54:     at async rJ.handleResponse (/home/azis/ares/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js:1:119701)
+2026-07-29 06:06:54:     at async c (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:84883)
+2026-07-29 06:06:54:     at async Module.E [as handler] (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:85990)
+2026-07-29 06:06:55: [31m[auth][error][0m CredentialsSignin: Read more at https://errors.authjs.dev#credentialssignin
+2026-07-29 06:06:55:     at iv (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:40971)
+2026-07-29 06:06:55:     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+2026-07-29 06:06:55:     at async iP (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:50551)
+2026-07-29 06:06:55:     at async iU (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:54801)
+2026-07-29 06:06:55:     at async rJ.do (/home/azis/ares/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js:5:20930)
+2026-07-29 06:06:55:     at async rJ.handle (/home/azis/ares/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js:5:25785)
+2026-07-29 06:06:55:     at async l (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:83842)
+2026-07-29 06:06:55:     at async rJ.handleResponse (/home/azis/ares/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js:1:119701)
+2026-07-29 06:06:55:     at async c (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:84883)
+2026-07-29 06:06:55:     at async Module.E [as handler] (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:85990)
+2026-07-29 06:06:55: [31m[auth][error][0m CredentialsSignin: Read more at https://errors.authjs.dev#credentialssignin
+2026-07-29 06:06:55:     at iv (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:40971)
+2026-07-29 06:06:55:     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+2026-07-29 06:06:55:     at async iP (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:50551)
+2026-07-29 06:06:55:     at async iU (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:54801)
+2026-07-29 06:06:55:     at async rJ.do (/home/azis/ares/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js:5:20930)
+2026-07-29 06:06:55:     at async rJ.handle (/home/azis/ares/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js:5:25785)
+2026-07-29 06:06:55:     at async l (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:83842)
+2026-07-29 06:06:55:     at async rJ.handleResponse (/home/azis/ares/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js:1:119701)
+2026-07-29 06:06:55:     at async c (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:84883)
+2026-07-29 06:06:55:     at async Module.E [as handler] (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:85990)
+2026-07-29 06:06:55: [31m[auth][error][0m CredentialsSignin: Read more at https://errors.authjs.dev#credentialssignin
+2026-07-29 06:06:55:     at iv (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:40971)
+2026-07-29 06:06:55:     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+2026-07-29 06:06:55:     at async iP (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:50551)
+2026-07-29 06:06:55:     at async iU (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:54801)
+2026-07-29 06:06:55:     at async rJ.do (/home/azis/ares/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js:5:20930)
+2026-07-29 06:06:55:     at async rJ.handle (/home/azis/ares/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js:5:25785)
+2026-07-29 06:06:55:     at async l (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:83842)
+2026-07-29 06:06:55:     at async rJ.handleResponse (/home/azis/ares/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js:1:119701)
+2026-07-29 06:06:55:     at async c (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:84883)
+2026-07-29 06:06:55:     at async Module.E [as handler] (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:85990)
+2026-07-29 06:06:55: [31m[auth][error][0m CredentialsSignin: Read more at https://errors.authjs.dev#credentialssignin
+2026-07-29 06:06:55:     at iv (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:40971)
+2026-07-29 06:06:55:     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+2026-07-29 06:06:55:     at async iP (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:50551)
+2026-07-29 06:06:55:     at async iU (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:54801)
+2026-07-29 06:06:55:     at async rJ.do (/home/azis/ares/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js:5:20930)
+2026-07-29 06:06:55:     at async rJ.handle (/home/azis/ares/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js:5:25785)
+2026-07-29 06:06:55:     at async l (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:83842)
+2026-07-29 06:06:55:     at async rJ.handleResponse (/home/azis/ares/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js:1:119701)
+2026-07-29 06:06:55:     at async c (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:84883)
+2026-07-29 06:06:55:     at async Module.E [as handler] (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:85990)
+2026-07-29 06:06:56: [31m[auth][error][0m CredentialsSignin: Read more at https://errors.authjs.dev#credentialssignin
+2026-07-29 06:06:56:     at iv (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:40971)
+2026-07-29 06:06:56:     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+2026-07-29 06:06:56:     at async iP (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:50551)
+2026-07-29 06:06:56:     at async iU (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:54801)
+2026-07-29 06:06:56:     at async rJ.do (/home/azis/ares/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js:5:20930)
+2026-07-29 06:06:56:     at async rJ.handle (/home/azis/ares/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js:5:25785)
+2026-07-29 06:06:56:     at async l (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:83842)
+2026-07-29 06:06:56:     at async rJ.handleResponse (/home/azis/ares/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js:1:119701)
+2026-07-29 06:06:56:     at async c (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:84883)
+2026-07-29 06:06:56:     at async Module.E [as handler] (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:85990)
+2026-07-29 06:06:56: [31m[auth][error][0m CredentialsSignin: Read more at https://errors.authjs.dev#credentialssignin
+2026-07-29 06:06:56:     at iv (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:40971)
+2026-07-29 06:06:56:     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+2026-07-29 06:06:56:     at async iP (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:50551)
+2026-07-29 06:06:56:     at async iU (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:54801)
+2026-07-29 06:06:56:     at async rJ.do (/home/azis/ares/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js:5:20930)
+2026-07-29 06:06:56:     at async rJ.handle (/home/azis/ares/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js:5:25785)
+2026-07-29 06:06:56:     at async l (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:83842)
+2026-07-29 06:06:56:     at async rJ.handleResponse (/home/azis/ares/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js:1:119701)
+2026-07-29 06:06:56:     at async c (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:84883)
+2026-07-29 06:06:56:     at async Module.E [as handler] (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:85990)
+2026-07-29 06:06:56: [31m[auth][error][0m CredentialsSignin: Read more at https://errors.authjs.dev#credentialssignin
+2026-07-29 06:06:56:     at iv (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:40971)
+2026-07-29 06:06:56:     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+2026-07-29 06:06:56:     at async iP (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:50551)
+2026-07-29 06:06:56:     at async iU (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:54801)
+2026-07-29 06:06:56:     at async rJ.do (/home/azis/ares/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js:5:20930)
+2026-07-29 06:06:56:     at async rJ.handle (/home/azis/ares/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js:5:25785)
+2026-07-29 06:06:56:     at async l (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:83842)
+2026-07-29 06:06:56:     at async rJ.handleResponse (/home/azis/ares/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js:1:119701)
+2026-07-29 06:06:56:     at async c (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:84883)
+2026-07-29 06:06:56:     at async Module.E [as handler] (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:85990)
+2026-07-29 06:06:56: [31m[auth][error][0m CredentialsSignin: Read more at https://errors.authjs.dev#credentialssignin
+2026-07-29 06:06:56:     at iv (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:40971)
+2026-07-29 06:06:56:     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+2026-07-29 06:06:56:     at async iP (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:50551)
+2026-07-29 06:06:56:     at async iU (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:54801)
+2026-07-29 06:06:56:     at async rJ.do (/home/azis/ares/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js:5:20930)
+2026-07-29 06:06:56:     at async rJ.handle (/home/azis/ares/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js:5:25785)
+2026-07-29 06:06:56:     at async l (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:83842)
+2026-07-29 06:06:56:     at async rJ.handleResponse (/home/azis/ares/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js:1:119701)
+2026-07-29 06:06:56:     at async c (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:84883)
+2026-07-29 06:06:56:     at async Module.E [as handler] (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:85990)
+2026-07-29 06:06:56: [31m[auth][error][0m CredentialsSignin: Read more at https://errors.authjs.dev#credentialssignin
+2026-07-29 06:06:56:     at iv (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:40971)
+2026-07-29 06:06:56:     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+2026-07-29 06:06:56:     at async iP (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:50551)
+2026-07-29 06:06:56:     at async iU (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:54801)
+2026-07-29 06:06:56:     at async rJ.do (/home/azis/ares/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js:5:20930)
+2026-07-29 06:06:56:     at async rJ.handle (/home/azis/ares/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js:5:25785)
+2026-07-29 06:06:56:     at async l (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:83842)
+2026-07-29 06:06:56:     at async rJ.handleResponse (/home/azis/ares/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js:1:119701)
+2026-07-29 06:06:56:     at async c (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:84883)
+2026-07-29 06:06:56:     at async Module.E [as handler] (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:85990)
+2026-07-29 06:06:57: [31m[auth][error][0m CredentialsSignin: Read more at https://errors.authjs.dev#credentialssignin
+2026-07-29 06:06:57:     at iv (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:40971)
+2026-07-29 06:06:57:     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+2026-07-29 06:06:57:     at async iP (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:50551)
+2026-07-29 06:06:57:     at async iU (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:54801)
+2026-07-29 06:06:57:     at async rJ.do (/home/azis/ares/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js:5:20930)
+2026-07-29 06:06:57:     at async rJ.handle (/home/azis/ares/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js:5:25785)
+2026-07-29 06:06:57:     at async l (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:83842)
+2026-07-29 06:06:57:     at async rJ.handleResponse (/home/azis/ares/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js:1:119701)
+2026-07-29 06:06:57:     at async c (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:84883)
+2026-07-29 06:06:57:     at async Module.E [as handler] (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:85990)
+2026-07-29 06:06:57: [31m[auth][error][0m CredentialsSignin: Read more at https://errors.authjs.dev#credentialssignin
+2026-07-29 06:06:57:     at iv (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:40971)
+2026-07-29 06:06:57:     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+2026-07-29 06:06:57:     at async iP (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:50551)
+2026-07-29 06:06:57:     at async iU (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:54801)
+2026-07-29 06:06:57:     at async rJ.do (/home/azis/ares/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js:5:20930)
+2026-07-29 06:06:57:     at async rJ.handle (/home/azis/ares/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js:5:25785)
+2026-07-29 06:06:57:     at async l (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:83842)
+2026-07-29 06:06:57:     at async rJ.handleResponse (/home/azis/ares/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js:1:119701)
+2026-07-29 06:06:57:     at async c (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:84883)
+2026-07-29 06:06:57:     at async Module.E [as handler] (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:85990)

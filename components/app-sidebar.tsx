@@ -33,7 +33,7 @@ type NavItem = {
 
 const navMain: NavItem[] = [
   {
-    title: "Dashboard Utama",
+    title: "Dashboard",
     url: "/dashboard",
     icon: <LayoutDashboardIcon />,
   },

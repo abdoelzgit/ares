@@ -226,7 +226,7 @@ export default function UsersSection() {
       <main className="p-6 space-y-4">
         <div className="flex flex-col gap-1 mb-2">
           <h1 className="text-xl font-bold font-heading tracking-tight flex items-center gap-2">
-            <Users className="h-5 w-5 text-amber-600" />
+            <Users className="h-5 w-5 text-primary" />
             Kelola Pengguna Sistem
           </h1>
           <p className="text-xs text-muted-foreground">

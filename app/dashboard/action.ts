@@ -16,10 +16,13 @@ export async function getAccessibleCategoriesForUser() {
 
   return categories.filter((c) => accessibleIds.includes(c.id))
 }
+
 export async function getAllAccessibleDocuments() {
   const user = await getCurrentUser()
   return getAccessibleDocuments(user)   // sudah handle RBAC filtering di dalamnya
 }
+
+
 
 export async function getDocumentsByCategory(categoryCode: string) {
   const user = await getCurrentUser()

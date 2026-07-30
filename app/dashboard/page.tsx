@@ -280,7 +280,7 @@ export default function Page() {
       <main className="flex flex-1 flex-col gap-6 p-6 overflow-y-auto">
         {/* STATS OVERVIEW CARDS */}
         {/* <DashboardStats></DashboardStats  > */}
-        <section className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        <section className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           <Card className="overflow-hidden border-border/60 shadow-sm hover:shadow transition-all duration-200">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Total Dokumen</CardTitle>
@@ -314,7 +314,7 @@ export default function Page() {
             </CardContent>
           </Card>
 
-          <Card className="overflow-hidden border-border/60 shadow-sm hover:shadow transition-all duration-200">
+          {/* <Card className="overflow-hidden border-border/60 shadow-sm hover:shadow transition-all duration-200">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-xs font-bold text-muted-foreground uppercase tracking-wider">Evaluasi Semester</CardTitle>
               <ShieldAlert className="h-4 w-4 text-red-600 animate-pulse" />
@@ -323,7 +323,7 @@ export default function Page() {
               <div className="text-2xl font-bold font-heading text-red-600">1</div>
               <p className="text-xs text-muted-foreground mt-1">Perlu review validasi dokumen</p>
             </CardContent>
-          </Card>
+          </Card> */}
         </section>
 
         {/* SCANNER / CABINETS SECTION */}

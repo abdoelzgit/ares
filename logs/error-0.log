@@ -743,3 +743,198 @@
 2026-07-29 06:06:57:     at async rJ.handleResponse (/home/azis/ares/node_modules/next/dist/compiled/next-server/app-route-turbo.runtime.prod.js:1:119701)
 2026-07-29 06:06:57:     at async c (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:84883)
 2026-07-29 06:06:57:     at async Module.E [as handler] (/home/azis/ares/.next/server/chunks/_0g-ydn0._.js:404:85990)
+2026-07-29 08:00:03: [31m[auth][error][0m UntrustedHost: Host must be trusted. URL was: https://archive.smktibazma.sch.id/api/auth/session. Read more at https://errors.authjs.dev#untrustedhost
+2026-07-29 08:00:03:     at /home/azis/ares/.next/server/edge/chunks/[root-of-the-server]__0-6e10c._.js:412:51495
+2026-07-29 08:00:03:     at cv (/home/azis/ares/.next/server/edge/chunks/[root-of-the-server]__0-6e10c._.js:412:54190)
+2026-07-29 08:00:03:     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+2026-07-29 08:00:04: [31m[auth][error][0m UntrustedHost: Host must be trusted. URL was: https://archive.smktibazma.sch.id/api/auth/session. Read more at https://errors.authjs.dev#untrustedhost
+2026-07-29 08:00:04:     at /home/azis/ares/.next/server/edge/chunks/[root-of-the-server]__0-6e10c._.js:412:51495
+2026-07-29 08:00:04:     at cv (/home/azis/ares/.next/server/edge/chunks/[root-of-the-server]__0-6e10c._.js:412:54190)
+2026-07-29 08:00:04:     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+2026-07-29 08:00:05: [31m[auth][error][0m UntrustedHost: Host must be trusted. URL was: https://archive.smktibazma.sch.id/api/auth/session. Read more at https://errors.authjs.dev#untrustedhost
+2026-07-29 08:00:05:     at /home/azis/ares/.next/server/edge/chunks/[root-of-the-server]__0-6e10c._.js:412:51495
+2026-07-29 08:00:05:     at cv (/home/azis/ares/.next/server/edge/chunks/[root-of-the-server]__0-6e10c._.js:412:54190)
+2026-07-29 08:00:24: [31m[auth][error][0m UntrustedHost: Host must be trusted. URL was: http://10.255.255.25:3000/api/auth/session. Read more at https://errors.authjs.dev#untrustedhost
+2026-07-29 08:00:24:     at /home/azis/ares/.next/server/edge/chunks/[root-of-the-server]__0-6e10c._.js:412:51495
+2026-07-29 08:00:24:     at cv (/home/azis/ares/.next/server/edge/chunks/[root-of-the-server]__0-6e10c._.js:412:54190)
+2026-07-29 08:00:24:     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+2026-07-29 08:00:24: [31m[auth][error][0m UntrustedHost: Host must be trusted. URL was: http://10.255.255.25:3000/api/auth/session. Read more at https://errors.authjs.dev#untrustedhost
+2026-07-29 08:00:24:     at /home/azis/ares/.next/server/edge/chunks/[root-of-the-server]__0-6e10c._.js:412:51495
+2026-07-29 08:00:24:     at cv (/home/azis/ares/.next/server/edge/chunks/[root-of-the-server]__0-6e10c._.js:412:54190)
+2026-07-29 08:00:24:     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+2026-07-29 08:00:24: ⨯ Error: UNAUTHORIZED
+2026-07-29 08:00:24:     at <unknown> (.next/server/chunks/ssr/[root-of-the-server]__0ypxldg._.js:1:970)
+2026-07-29 08:00:24:     at async j (.next/server/chunks/ssr/[root-of-the-server]__0ypxldg._.js:1:21987) {
+2026-07-29 08:00:24:   digest: '1598391174'
+2026-07-29 08:00:24: }
+2026-07-29 08:00:27: [31m[auth][error][0m UntrustedHost: Host must be trusted. URL was: https://archive.smktibazma.sch.id/api/auth/session. Read more at https://errors.authjs.dev#untrustedhost
+2026-07-29 08:00:27:     at /home/azis/ares/.next/server/edge/chunks/[root-of-the-server]__0-6e10c._.js:412:51495
+2026-07-29 08:00:27:     at cv (/home/azis/ares/.next/server/edge/chunks/[root-of-the-server]__0-6e10c._.js:412:54190)
+2026-07-29 08:00:27:     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+2026-07-29 08:00:27: [31m[auth][error][0m UntrustedHost: Host must be trusted. URL was: https://archive.smktibazma.sch.id/api/auth/session. Read more at https://errors.authjs.dev#untrustedhost
+2026-07-29 08:00:27:     at /home/azis/ares/.next/server/edge/chunks/[root-of-the-server]__0-6e10c._.js:412:51495
+2026-07-29 08:00:27:     at cv (/home/azis/ares/.next/server/edge/chunks/[root-of-the-server]__0-6e10c._.js:412:54190)
+2026-07-29 08:00:27:     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+2026-07-29 08:00:27: ⨯ Error: UNAUTHORIZED
+2026-07-29 08:00:27:     at <unknown> (.next/server/chunks/ssr/[root-of-the-server]__0ypxldg._.js:1:970)
+2026-07-29 08:00:27:     at async j (.next/server/chunks/ssr/[root-of-the-server]__0ypxldg._.js:1:21987) {
+2026-07-29 08:00:27:   digest: '1598391174'
+2026-07-29 08:00:27: }
+2026-07-29 08:00:33: [31m[auth][error][0m UntrustedHost: Host must be trusted. URL was: https://archive.smktibazma.sch.id/api/auth/session. Read more at https://errors.authjs.dev#untrustedhost
+2026-07-29 08:00:33:     at /home/azis/ares/.next/server/edge/chunks/[root-of-the-server]__0-6e10c._.js:412:51495
+2026-07-29 08:00:33:     at cv (/home/azis/ares/.next/server/edge/chunks/[root-of-the-server]__0-6e10c._.js:412:54190)
+2026-07-29 08:00:33:     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+2026-07-29 08:00:33: [31m[auth][error][0m UntrustedHost: Host must be trusted. URL was: https://archive.smktibazma.sch.id/api/auth/session. Read more at https://errors.authjs.dev#untrustedhost
+2026-07-29 08:00:33:     at /home/azis/ares/.next/server/edge/chunks/[root-of-the-server]__0-6e10c._.js:412:51495
+2026-07-29 08:00:33:     at cv (/home/azis/ares/.next/server/edge/chunks/[root-of-the-server]__0-6e10c._.js:412:54190)
+2026-07-29 08:00:33:     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+2026-07-29 08:00:33: ⨯ Error: UNAUTHORIZED
+2026-07-29 08:00:33:     at <unknown> (.next/server/chunks/ssr/[root-of-the-server]__0ypxldg._.js:1:970)
+2026-07-29 08:00:33:     at async j (.next/server/chunks/ssr/[root-of-the-server]__0ypxldg._.js:1:21987) {
+2026-07-29 08:00:33:   digest: '1598391174'
+2026-07-29 08:00:33: }
+2026-07-29 08:00:38: [31m[auth][error][0m UntrustedHost: Host must be trusted. URL was: https://archive.smktibazma.sch.id/api/auth/session. Read more at https://errors.authjs.dev#untrustedhost
+2026-07-29 08:00:38:     at /home/azis/ares/.next/server/edge/chunks/[root-of-the-server]__0-6e10c._.js:412:51495
+2026-07-29 08:00:38:     at cv (/home/azis/ares/.next/server/edge/chunks/[root-of-the-server]__0-6e10c._.js:412:54190)
+2026-07-29 08:00:38:     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+2026-07-29 08:00:38: [31m[auth][error][0m UntrustedHost: Host must be trusted. URL was: https://archive.smktibazma.sch.id/api/auth/session. Read more at https://errors.authjs.dev#untrustedhost
+2026-07-29 08:00:38:     at /home/azis/ares/.next/server/edge/chunks/[root-of-the-server]__0-6e10c._.js:412:51495
+2026-07-29 08:00:38:     at cv (/home/azis/ares/.next/server/edge/chunks/[root-of-the-server]__0-6e10c._.js:412:54190)
+2026-07-29 08:00:38:     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+2026-07-29 08:00:38: ⨯ Error: UNAUTHORIZED
+2026-07-29 08:00:38:     at <unknown> (.next/server/chunks/ssr/[root-of-the-server]__0ypxldg._.js:1:970)
+2026-07-29 08:00:38:     at async j (.next/server/chunks/ssr/[root-of-the-server]__0ypxldg._.js:1:21987) {
+2026-07-29 08:00:38:   digest: '1598391174'
+2026-07-29 08:00:38: }
+2026-07-29 08:00:45: [31m[auth][error][0m UntrustedHost: Host must be trusted. URL was: https://archive.smktibazma.sch.id/api/auth/session. Read more at https://errors.authjs.dev#untrustedhost
+2026-07-29 08:00:45:     at /home/azis/ares/.next/server/edge/chunks/[root-of-the-server]__0-6e10c._.js:412:51495
+2026-07-29 08:00:45:     at cv (/home/azis/ares/.next/server/edge/chunks/[root-of-the-server]__0-6e10c._.js:412:54190)
+2026-07-29 08:00:45:     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+2026-07-29 08:00:45: [31m[auth][error][0m UntrustedHost: Host must be trusted. URL was: https://archive.smktibazma.sch.id/api/auth/session. Read more at https://errors.authjs.dev#untrustedhost
+2026-07-29 08:00:45:     at /home/azis/ares/.next/server/edge/chunks/[root-of-the-server]__0-6e10c._.js:412:51495
+2026-07-29 08:00:45:     at cv (/home/azis/ares/.next/server/edge/chunks/[root-of-the-server]__0-6e10c._.js:412:54190)
+2026-07-29 08:00:45:     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+2026-07-29 08:00:45: ⨯ Error: UNAUTHORIZED
+2026-07-29 08:00:45:     at <unknown> (.next/server/chunks/ssr/[root-of-the-server]__0ypxldg._.js:1:970)
+2026-07-29 08:00:45:     at async j (.next/server/chunks/ssr/[root-of-the-server]__0ypxldg._.js:1:21987) {
+2026-07-29 08:00:45:   digest: '1598391174'
+2026-07-29 08:00:45: }
+2026-07-29 08:01:28: [31m[auth][error][0m UntrustedHost: Host must be trusted. URL was: http://10.255.255.25:3000/api/auth/session. Read more at https://errors.authjs.dev#untrustedhost
+2026-07-29 08:01:28:     at /home/azis/ares/.next/server/edge/chunks/[root-of-the-server]__0-6e10c._.js:412:51495
+2026-07-29 08:01:28:     at cv (/home/azis/ares/.next/server/edge/chunks/[root-of-the-server]__0-6e10c._.js:412:54190)
+2026-07-29 08:01:28:     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+2026-07-29 08:01:28: ⨯ Error: UNAUTHORIZED
+2026-07-29 08:01:28:     at <unknown> (.next/server/chunks/ssr/[root-of-the-server]__0ypxldg._.js:1:970)
+2026-07-29 08:01:28:     at async j (.next/server/chunks/ssr/[root-of-the-server]__0ypxldg._.js:1:21987) {
+2026-07-29 08:01:28:   digest: '1598391174'
+2026-07-29 08:01:28: }
+2026-07-29 08:01:36: [31m[auth][error][0m UntrustedHost: Host must be trusted. URL was: https://archive.smktibazma.sch.id/api/auth/session. Read more at https://errors.authjs.dev#untrustedhost
+2026-07-29 08:01:36:     at /home/azis/ares/.next/server/edge/chunks/[root-of-the-server]__0-6e10c._.js:412:51495
+2026-07-29 08:01:36:     at cv (/home/azis/ares/.next/server/edge/chunks/[root-of-the-server]__0-6e10c._.js:412:54190)
+2026-07-29 08:01:36:     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+2026-07-29 08:01:36: [31m[auth][error][0m UntrustedHost: Host must be trusted. URL was: https://archive.smktibazma.sch.id/api/auth/session. Read more at https://errors.authjs.dev#untrustedhost
+2026-07-29 08:01:36:     at /home/azis/ares/.next/server/edge/chunks/[root-of-the-server]__0-6e10c._.js:412:51495
+2026-07-29 08:01:36:     at cv (/home/azis/ares/.next/server/edge/chunks/[root-of-the-server]__0-6e10c._.js:412:54190)
+2026-07-29 08:01:36:     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+2026-07-29 08:01:36: ⨯ Error: UNAUTHORIZED
+2026-07-29 08:01:36:     at <unknown> (.next/server/chunks/ssr/[root-of-the-server]__0ypxldg._.js:1:970)
+2026-07-29 08:01:36:     at async j (.next/server/chunks/ssr/[root-of-the-server]__0ypxldg._.js:1:21987) {
+2026-07-29 08:01:36:   digest: '1598391174'
+2026-07-29 08:01:36: }
+2026-07-29 08:03:41: [31m[auth][error][0m UntrustedHost: Host must be trusted. URL was: https://archive.smktibazma.sch.id/api/auth/session. Read more at https://errors.authjs.dev#untrustedhost
+2026-07-29 08:03:41:     at /home/azis/ares/.next/server/edge/chunks/[root-of-the-server]__0-6e10c._.js:412:51495
+2026-07-29 08:03:41:     at cv (/home/azis/ares/.next/server/edge/chunks/[root-of-the-server]__0-6e10c._.js:412:54190)
+2026-07-29 08:03:41:     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+2026-07-29 08:03:41: [31m[auth][error][0m UntrustedHost: Host must be trusted. URL was: https://archive.smktibazma.sch.id/api/auth/session. Read more at https://errors.authjs.dev#untrustedhost
+2026-07-29 08:03:41:     at /home/azis/ares/.next/server/edge/chunks/[root-of-the-server]__0-6e10c._.js:412:51495
+2026-07-29 08:03:41:     at cv (/home/azis/ares/.next/server/edge/chunks/[root-of-the-server]__0-6e10c._.js:412:54190)
+2026-07-29 08:03:41:     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+2026-07-29 08:03:41: ⨯ Error: UNAUTHORIZED
+2026-07-29 08:03:41:     at <unknown> (.next/server/chunks/ssr/[root-of-the-server]__0ypxldg._.js:1:970)
+2026-07-29 08:03:41:     at async j (.next/server/chunks/ssr/[root-of-the-server]__0ypxldg._.js:1:21987) {
+2026-07-29 08:03:41:   digest: '1598391174'
+2026-07-29 08:03:41: }
+2026-07-29 08:03:44: [31m[auth][error][0m UntrustedHost: Host must be trusted. URL was: https://archive.smktibazma.sch.id/api/auth/session. Read more at https://errors.authjs.dev#untrustedhost
+2026-07-29 08:03:44:     at /home/azis/ares/.next/server/edge/chunks/[root-of-the-server]__0-6e10c._.js:412:51495
+2026-07-29 08:03:44:     at cv (/home/azis/ares/.next/server/edge/chunks/[root-of-the-server]__0-6e10c._.js:412:54190)
+2026-07-29 08:03:44:     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+2026-07-29 08:03:44: [31m[auth][error][0m UntrustedHost: Host must be trusted. URL was: https://archive.smktibazma.sch.id/api/auth/session. Read more at https://errors.authjs.dev#untrustedhost
+2026-07-29 08:03:44:     at /home/azis/ares/.next/server/edge/chunks/[root-of-the-server]__0-6e10c._.js:412:51495
+2026-07-29 08:03:44:     at cv (/home/azis/ares/.next/server/edge/chunks/[root-of-the-server]__0-6e10c._.js:412:54190)
+2026-07-29 08:03:44:     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+2026-07-29 08:03:44: ⨯ Error: UNAUTHORIZED
+2026-07-29 08:03:44:     at <unknown> (.next/server/chunks/ssr/[root-of-the-server]__0ypxldg._.js:1:970)
+2026-07-29 08:03:44:     at async j (.next/server/chunks/ssr/[root-of-the-server]__0ypxldg._.js:1:21987) {
+2026-07-29 08:03:44:   digest: '1598391174'
+2026-07-29 08:03:44: }
+2026-07-29 08:03:45: [31m[auth][error][0m UntrustedHost: Host must be trusted. URL was: https://archive.smktibazma.sch.id/api/auth/session. Read more at https://errors.authjs.dev#untrustedhost
+2026-07-29 08:03:45:     at /home/azis/ares/.next/server/edge/chunks/[root-of-the-server]__0-6e10c._.js:412:51495
+2026-07-29 08:03:45:     at cv (/home/azis/ares/.next/server/edge/chunks/[root-of-the-server]__0-6e10c._.js:412:54190)
+2026-07-29 08:03:45:     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+2026-07-29 08:03:45: [31m[auth][error][0m UntrustedHost: Host must be trusted. URL was: https://archive.smktibazma.sch.id/api/auth/session. Read more at https://errors.authjs.dev#untrustedhost
+2026-07-29 08:03:45:     at /home/azis/ares/.next/server/edge/chunks/[root-of-the-server]__0-6e10c._.js:412:51495
+2026-07-29 08:03:45:     at cv (/home/azis/ares/.next/server/edge/chunks/[root-of-the-server]__0-6e10c._.js:412:54190)
+2026-07-29 08:03:45:     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+2026-07-29 08:03:45: ⨯ Error: UNAUTHORIZED
+2026-07-29 08:03:45:     at <unknown> (.next/server/chunks/ssr/[root-of-the-server]__0ypxldg._.js:1:970)
+2026-07-29 08:03:45:     at async j (.next/server/chunks/ssr/[root-of-the-server]__0ypxldg._.js:1:21987) {
+2026-07-29 08:03:45:   digest: '1598391174'
+2026-07-29 08:03:45: }
+2026-07-29 08:03:56: [31m[auth][error][0m UntrustedHost: Host must be trusted. URL was: http://10.255.255.25:3000/api/auth/session. Read more at https://errors.authjs.dev#untrustedhost
+2026-07-29 08:03:56:     at /home/azis/ares/.next/server/edge/chunks/[root-of-the-server]__0-6e10c._.js:412:51495
+2026-07-29 08:03:56:     at cv (/home/azis/ares/.next/server/edge/chunks/[root-of-the-server]__0-6e10c._.js:412:54190)
+2026-07-29 08:03:56:     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+2026-07-29 08:03:57: [31m[auth][error][0m UntrustedHost: Host must be trusted. URL was: http://10.255.255.25:3000/api/auth/session. Read more at https://errors.authjs.dev#untrustedhost
+2026-07-29 08:03:57:     at /home/azis/ares/.next/server/edge/chunks/[root-of-the-server]__0-6e10c._.js:412:51495
+2026-07-29 08:03:57:     at cv (/home/azis/ares/.next/server/edge/chunks/[root-of-the-server]__0-6e10c._.js:412:54190)
+2026-07-29 08:03:57:     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+2026-07-29 08:03:58: [31m[auth][error][0m UntrustedHost: Host must be trusted. URL was: http://10.255.255.25:3000/api/auth/session. Read more at https://errors.authjs.dev#untrustedhost
+2026-07-29 08:03:58:     at /home/azis/ares/.next/server/edge/chunks/[root-of-the-server]__0-6e10c._.js:412:51495
+2026-07-29 08:03:58:     at cv (/home/azis/ares/.next/server/edge/chunks/[root-of-the-server]__0-6e10c._.js:412:54190)
+2026-07-29 08:03:58: [31m[auth][error][0m UntrustedHost: Host must be trusted. URL was: http://10.255.255.25:3000/api/auth/session. Read more at https://errors.authjs.dev#untrustedhost
+2026-07-29 08:03:58:     at /home/azis/ares/.next/server/edge/chunks/[root-of-the-server]__0-6e10c._.js:412:51495
+2026-07-29 08:03:58:     at cv (/home/azis/ares/.next/server/edge/chunks/[root-of-the-server]__0-6e10c._.js:412:54190)
+2026-07-29 08:04:40: [31m[auth][error][0m UntrustedHost: Host must be trusted. URL was: http://10.255.255.25:3000/api/auth/session. Read more at https://errors.authjs.dev#untrustedhost
+2026-07-29 08:04:40:     at /home/azis/ares/.next/server/edge/chunks/[root-of-the-server]__0-6e10c._.js:412:51495
+2026-07-29 08:04:40:     at cv (/home/azis/ares/.next/server/edge/chunks/[root-of-the-server]__0-6e10c._.js:412:54190)
+2026-07-29 08:04:40:     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+2026-07-29 08:04:40: [31m[auth][error][0m UntrustedHost: Host must be trusted. URL was: http://10.255.255.25:3000/api/auth/session. Read more at https://errors.authjs.dev#untrustedhost
+2026-07-29 08:04:40:     at /home/azis/ares/.next/server/edge/chunks/[root-of-the-server]__0-6e10c._.js:412:51495
+2026-07-29 08:04:40:     at cv (/home/azis/ares/.next/server/edge/chunks/[root-of-the-server]__0-6e10c._.js:412:54190)
+2026-07-29 08:04:40:     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+2026-07-29 08:04:40: ⨯ Error: UNAUTHORIZED
+2026-07-29 08:04:40:     at <unknown> (.next/server/chunks/ssr/[root-of-the-server]__0ypxldg._.js:1:970)
+2026-07-29 08:04:40:     at async j (.next/server/chunks/ssr/[root-of-the-server]__0ypxldg._.js:1:21987) {
+2026-07-29 08:04:40:   digest: '1598391174'
+2026-07-29 08:04:40: }
+2026-07-29 08:04:44: [31m[auth][error][0m UntrustedHost: Host must be trusted. URL was: http://10.255.255.25:3000/api/auth/session. Read more at https://errors.authjs.dev#untrustedhost
+2026-07-29 08:04:44:     at /home/azis/ares/.next/server/edge/chunks/[root-of-the-server]__0-6e10c._.js:412:51495
+2026-07-29 08:04:44:     at cv (/home/azis/ares/.next/server/edge/chunks/[root-of-the-server]__0-6e10c._.js:412:54190)
+2026-07-29 08:04:44:     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+2026-07-29 08:04:44: [31m[auth][error][0m UntrustedHost: Host must be trusted. URL was: http://10.255.255.25:3000/api/auth/session. Read more at https://errors.authjs.dev#untrustedhost
+2026-07-29 08:04:44:     at /home/azis/ares/.next/server/edge/chunks/[root-of-the-server]__0-6e10c._.js:412:51495
+2026-07-29 08:04:44:     at cv (/home/azis/ares/.next/server/edge/chunks/[root-of-the-server]__0-6e10c._.js:412:54190)
+2026-07-29 08:04:44:     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+2026-07-29 08:04:44: ⨯ Error: UNAUTHORIZED
+2026-07-29 08:04:44:     at <unknown> (.next/server/chunks/ssr/[root-of-the-server]__0ypxldg._.js:1:970)
+2026-07-29 08:04:44:     at async j (.next/server/chunks/ssr/[root-of-the-server]__0ypxldg._.js:1:21987) {
+2026-07-29 08:04:44:   digest: '1598391174'
+2026-07-29 08:04:44: }
+2026-07-29 08:04:46: [31m[auth][error][0m UntrustedHost: Host must be trusted. URL was: http://10.255.255.25:3000/api/auth/session. Read more at https://errors.authjs.dev#untrustedhost
+2026-07-29 08:04:46:     at /home/azis/ares/.next/server/edge/chunks/[root-of-the-server]__0-6e10c._.js:412:51495
+2026-07-29 08:04:46:     at cv (/home/azis/ares/.next/server/edge/chunks/[root-of-the-server]__0-6e10c._.js:412:54190)
+2026-07-29 08:04:46:     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+2026-07-29 08:04:46: ⨯ Error: UNAUTHORIZED
+2026-07-29 08:04:46:     at <unknown> (.next/server/chunks/ssr/[root-of-the-server]__0ypxldg._.js:1:970)
+2026-07-29 08:04:46:     at async j (.next/server/chunks/ssr/[root-of-the-server]__0ypxldg._.js:1:21987) {
+2026-07-29 08:04:46:   digest: '1598391174'
+2026-07-29 08:04:46: }
+2026-07-29 08:05:07: [31m[auth][error][0m UntrustedHost: Host must be trusted. URL was: https://archive.smktibazma.sch.id/api/auth/session. Read more at https://errors.authjs.dev#untrustedhost
+2026-07-29 08:05:07:     at /home/azis/ares/.next/server/edge/chunks/[root-of-the-server]__0-6e10c._.js:412:51495
+2026-07-29 08:05:07:     at cv (/home/azis/ares/.next/server/edge/chunks/[root-of-the-server]__0-6e10c._.js:412:54190)
+2026-07-29 08:05:07:     at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+2026-07-29 08:05:07: ⨯ Error: UNAUTHORIZED
+2026-07-29 08:05:07:     at <unknown> (.next/server/chunks/ssr/[root-of-the-server]__0ypxldg._.js:1:970)
+2026-07-29 08:05:07:     at async j (.next/server/chunks/ssr/[root-of-the-server]__0ypxldg._.js:1:21987) {
+2026-07-29 08:05:07:   digest: '1598391174'
+2026-07-29 08:05:07: }

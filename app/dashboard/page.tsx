@@ -61,6 +61,7 @@ import {
 DashboardDocuments
 import { DocumentTable } from "@/components/document-table"
 import { DashboardDocuments } from "./document-dashboard"
+import { BulkUploadModal } from "@/components/dashboard/bulk-upload-modal"
 
 // Types matching the PRD
 type UserRole = 'DIREKTUR' | 'WAKASEK' | 'GURU' | 'PEMBINA' | 'TU' | 'KEUANGAN'
@@ -339,9 +340,16 @@ export default function Page() {
         {/* SEARCH & DOCUMENTS LIST */}
         <section className="">
           {/* LEFT: Search, Filters & Actions */}
-
+          <div className="flex gap-2">
+            <Button onClick={() => setUploadOpen(true)}>
+              <UploadCloud className="mr-2 h-4 w-4" />
+              Bulk Upload
+            </Button>
+          </div>
         </section>
       </main>
+
+      <BulkUploadModal open={uploadOpen} onOpenChange={setUploadOpen} />
     </>
   )
 }

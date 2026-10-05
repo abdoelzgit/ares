@@ -22,6 +22,8 @@ export async function getAllAccessibleDocuments() {
   return getAccessibleDocuments(user) // sudah handle RBAC filtering di dalamnya
 }
 
+
+
 export async function getDocumentsByCategory(categoryCode: string) {
   const user = await getCurrentUser()
 

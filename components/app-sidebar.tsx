@@ -33,7 +33,7 @@ type NavItem = {
 
 const navMain: NavItem[] = [
   {
-    title: "Dashboard Utama",
+    title: "Dashboard",
     url: "/dashboard",
     icon: <LayoutDashboardIcon />,
   },
@@ -48,17 +48,7 @@ const navMain: NavItem[] = [
     icon: <User2Icon />,
     roles: [UserRole.DIREKTUR],
   },
-  {
-    title: "Evaluasi Semester",
-    url: "#",
-    icon: <Settings2Icon />,
-    items: [
-      {
-        title: "Validasi Berkas",
-        url: "#",
-      },
-    ],
-  },
+ 
 ]
 
 const staticData = {

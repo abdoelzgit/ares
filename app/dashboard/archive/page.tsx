@@ -99,20 +99,13 @@ export default async function ArchiveDirectoryPage() {
           </div>
         </section>
 
-        {/* Informative tips */}
+        {/* Infoxrmative tips */}
         <section className="bg-muted/40 border rounded-xl p-5 mt-4 text-xs space-y-2">
           <h3 className="font-bold flex items-center gap-1.5 text-foreground/80">
             <Layers className="h-4 w-4 text-primary" />
             Ketentuan Penyimpanan Arsip (Tiered Storage)
           </h3>
-          <ul className="list-disc pl-4 text-muted-foreground space-y-1 text-[11px] leading-relaxed">
-            <li>
-              Sistem memindahkan berkas di folder <strong>Archive</strong> secara otomatis ke Cold Storage (seperti AWS S3 Glacier / Cloudflare R2) jika berumur lebih dari 2 tahun untuk menghemat biaya operasional.
-            </li>
-            <li>
-              Meskipun berkas fisik dipindahkan ke Cold Storage, metadata berkas tetap terindeks dan dapat dicari sewaktu-waktu di aplikasi.
-            </li>
-          </ul>
+          
         </section>
       </main>
     </>

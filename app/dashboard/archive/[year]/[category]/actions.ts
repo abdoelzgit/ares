@@ -1,16 +1,12 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
-import { mkdir, unlink, writeFile } from "fs/promises";
-import { join, extname } from "path";
-import { randomUUID } from "crypto";
 import { revalidatePath } from "next/cache";
+import { saveFile, deleteFile } from "@/lib/file-storage";
 import { auth } from "@/auth";
 import { getCurrentUser, assertCategoryAccess, resolveCategoryIdFromCode } from '@/lib/rbac'
 
 const db = prisma as any;
-
-const UPLOAD_DIR = join(process.cwd(), "public/uploads");
 
 const ALLOWED_TYPES = [
   "application/pdf",
@@ -18,33 +14,15 @@ const ALLOWED_TYPES = [
   "application/msword",
   "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
   "application/vnd.ms-excel",
+  "image/png",
+  "image/jpeg",
 ];
 
-async function saveFile(file: File) {
-  if (!ALLOWED_TYPES.includes(file.type)) {
-    throw new Error("Format file tidak didukung.");
-  }
-
-  await mkdir(UPLOAD_DIR, {
-    recursive: true,
-  });
-
-  const extension = extname(file.name);
-  const filename = `${randomUUID()}${extension}`;
-
-  const filepath = join(UPLOAD_DIR, filename);
-
-  const bytes = await file.arrayBuffer();
-
-  await writeFile(filepath, Buffer.from(bytes));
-
-  return `/uploads/${filename}`;
-}
-
+const MAX_SIZE = 100 * 1024 * 1024; // 10MB
 
 export async function getDocuments(year: string, categoryCode: string) {
   const user = await getCurrentUser()
-  
+
   const [archiveYear, category] = await Promise.all([
     prisma.archiveYear.findUnique({ where: { year } }),
     prisma.category.findUnique({ where: { code: categoryCode } }),
@@ -82,10 +60,12 @@ export async function listDocumentsInCategoryAction(categoryCode: string, year: 
     orderBy: { updatedAt: 'desc' },
   })
 }
+
 export async function uploadDocument(
   formData: FormData,
   schoolYear: string,
-  categoryCode: string
+  categoryCode: string,
+  folderId: string | null = null   // ← TAMBAHKAN parameter ini
 ) {
   const formattedTitle = formData.get('formattedTitle') as string
   const documentNumber = formData.get('documentNumber') as string
@@ -95,18 +75,14 @@ export async function uploadDocument(
   if (!formattedTitle) return { success: false, error: "Judul wajib diisi." }
   if (!documentNumber) return { success: false, error: "Nomor dokumen wajib diisi." }
   if (!file || file.size === 0) return { success: false, error: "File belum dipilih." }
-
-  const MAX_SIZE = 10 * 1024 * 1024
-  const ALLOWED_UPLOAD_TYPES = ["application/pdf", "image/png", "image/jpeg"]
   if (file.size > MAX_SIZE) return { success: false, error: "Ukuran file melebihi 10MB." }
-  if (!ALLOWED_UPLOAD_TYPES.includes(file.type)) return { success: false, error: "Tipe file tidak didukung." }
+  if (!ALLOWED_TYPES.includes(file.type)) return { success: false, error: "Tipe file tidak didukung." }
 
   const session = await auth()
   if (!session?.user?.id) return { success: false, error: "Sesi login tidak ditemukan." }
 
   let filePath: string | null = null
   try {
-    // Resolve KEDUA foreign key sebelum masuk transaksi
     const [category, archiveYear] = await Promise.all([
       db.category.findUnique({ where: { code: categoryCode } }),
       db.archiveYear.findUnique({ where: { year: schoolYear } }),
@@ -115,16 +91,23 @@ export async function uploadDocument(
     if (!category) return { success: false, error: "Kategori tidak ditemukan." }
     if (!archiveYear) return { success: false, error: "Tahun ajaran tidak ditemukan." }
 
+    await assertCategoryAccess(await getCurrentUser(), category.id)
+
     filePath = await saveFile(file)
+
+    const session2 = await auth()
+    if (!session2?.user?.id) return { success: false, error: "Sesi login tidak ditemukan." }
+    const userId = session2.user.id
 
     const document = await db.$transaction(async (tx: any) => {
       const doc = await tx.document.create({
         data: {
           title: formattedTitle,
           description,
-          schoolYearId: archiveYear.id,   // ganti dari schoolYear (string) ke schoolYearId (FK)
+          schoolYearId: archiveYear.id,
           documentNumber,
           categoryId: category.id,
+          folderId,  
         },
       })
 
@@ -133,7 +116,7 @@ export async function uploadDocument(
           documentId: doc.id,
           versionNumber: "v1.0",
           filePath: filePath!,
-          uploadedById: session?.user?.id ?? "",   // sudah pasti ada, tidak perlu fallback ""
+          uploadedById: userId,
         },
       })
 
@@ -146,7 +129,7 @@ export async function uploadDocument(
     revalidatePath(`/dashboard/archive/${schoolYear}/${categoryCode}`)
     return { success: true, data: document }
   } catch (err: any) {
-    if (filePath) await unlink(join(process.cwd(), "public", filePath)).catch(() => {})
+    if (filePath) await deleteFile(filePath).catch(() => { })
     return { success: false, error: err.message || "Gagal mengunggah dokumen" }
   }
 }
@@ -156,19 +139,23 @@ export async function uploadNewVersion(
   file: File,
   uploadedById: string
 ) {
+  if (!file || file.size === 0) return { success: false, error: "File belum dipilih." }
+  if (file.size > MAX_SIZE) return { success: false, error: "Ukuran file melebihi 10MB." }
+  if (!ALLOWED_TYPES.includes(file.type)) return { success: false, error: "Tipe file tidak didukung." }
+
+  let filePath: string | null = null
   try {
     const document = await db.document.findUnique({
-      where: {
-        id: documentId,
-      },
-      include: {
-        versions: true,
-      },
+      where: { id: documentId },
+      include: { versions: true, category: true },
     });
 
     if (!document) throw new Error("Document tidak ditemukan.");
 
-    const filePath = await saveFile(file);
+    const user = await getCurrentUser()
+    await assertCategoryAccess(user, document.categoryId)
+
+    filePath = await saveFile(file);
 
     const versionNumber = `v${document.versions.length + 1}.0`;
 
@@ -183,18 +170,15 @@ export async function uploadNewVersion(
       });
 
       await tx.document.update({
-        where: {
-          id: documentId,
-        },
-        data: {
-          currentVersionId: version.id,
-        },
+        where: { id: documentId },
+        data: { currentVersionId: version.id },
       });
     });
 
     revalidatePath("/dashboard/archive");
     return { success: true };
   } catch (err: any) {
+    if (filePath) await deleteFile(filePath).catch(() => { })
     return { success: false, error: err.message || "Gagal mengunggah versi baru" };
   }
 }
@@ -208,10 +192,14 @@ export async function updateDocument(
   }
 ) {
   try {
+    const document = await db.document.findUnique({ where: { id } })
+    if (!document) return { success: false, error: "Dokumen tidak ditemukan." }
+
+    const user = await getCurrentUser()
+    await assertCategoryAccess(user, document.categoryId)
+
     await db.document.update({
-      where: {
-        id,
-      },
+      where: { id },
       data,
     });
 
@@ -225,28 +213,21 @@ export async function updateDocument(
 export async function deleteDocument(id: string) {
   try {
     const document = await db.document.findUnique({
-      where: {
-        id,
-      },
-      include: {
-        versions: true,
-      },
+      where: { id },
+      include: { versions: true },
     });
 
     if (!document) {
       return { success: false, error: "Dokumen tidak ditemukan." };
     }
 
-    await db.document.delete({
-      where: {
-        id,
-      },
-    });
+    const user = await getCurrentUser()
+    await assertCategoryAccess(user, document.categoryId)
+
+    await db.document.delete({ where: { id } });
 
     for (const version of document.versions) {
-      await unlink(join(process.cwd(), "public", version.filePath)).catch(
-        () => {}
-      );
+      await deleteFile(version.filePath).catch(() => { })
     }
 
     revalidatePath("/dashboard/archive");
@@ -258,23 +239,25 @@ export async function deleteDocument(id: string) {
 
 export async function getDocumentById(id: string) {
   try {
-    return await db.document.findUnique({
-      where: {
-        id,
-      },
+    const user = await getCurrentUser()
+
+    const document = await db.document.findUnique({
+      where: { id },
       include: {
         category: true,
         currentVersion: true,
         versions: {
-          include: {
-            uploadedBy: true,
-          },
-          orderBy: {
-            createdAt: "desc",
-          },
+          include: { uploadedBy: true },
+          orderBy: { createdAt: "desc" },
         },
       },
     });
+
+    if (!document) return null
+
+    await assertCategoryAccess(user, document.categoryId)
+
+    return document
   } catch (error) {
     console.error("Error fetching document by ID:", error);
     return null;

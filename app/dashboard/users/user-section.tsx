@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { AppSidebar } from "@/components/app-sidebar"
+
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -42,6 +43,7 @@ import {
 import { Plus, Trash2, Edit, Loader2, Users } from "lucide-react"
 import { UserRole } from "@prisma/client"
 import { CategoryBadgeSelect } from "@/components/category-badge-select"
+import { notify } from "@/lib/notify"
 
 
 
@@ -77,12 +79,13 @@ export default function UsersSection() {
       if (res.success) {
         setOpenAdd(false)
         loadData()
+        notify.success("Pengguna Berhasil Ditambahkan")
       } else {
-        alert(res.error)
+        notify.error(res.error ?? "Gagal Menambahkan Pengguna" )
       }
     } catch (err) {
       console.error(err)
-      alert("Gagal menambahkan pengguna.")
+      notify.error("Gagal menambahkan pengguna.")
     } finally {
       setSubmitting(false)
     }
@@ -226,7 +229,7 @@ export default function UsersSection() {
       <main className="p-6 space-y-4">
         <div className="flex flex-col gap-1 mb-2">
           <h1 className="text-xl font-bold font-heading tracking-tight flex items-center gap-2">
-            <Users className="h-5 w-5 text-amber-600" />
+            <Users className="h-5 w-5 text-primary" />
             Kelola Pengguna Sistem
           </h1>
           <p className="text-xs text-muted-foreground">

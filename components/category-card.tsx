@@ -2,7 +2,21 @@
 
 import Link from "next/link"
 import { Card, CardHeader, CardTitle } from "./ui/card"
-import { LockIcon, UnlockIcon } from "lucide-react"
+import {
+  LockIcon,
+  UnlockIcon,
+  Wallet,
+  Settings2,
+  BedDouble,
+  Megaphone,
+  Users,
+  BookOpen,
+  GraduationCap,
+  ShieldCheck,
+  Server,
+  Landmark,
+  FolderOpen,
+} from "lucide-react"
 import { usePathname } from "next/navigation"
 
 type CategoryWithAccess = {
@@ -13,26 +27,37 @@ type CategoryWithAccess = {
   fileCount: number
 }
 
+const CATEGORY_ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
+  FIN: Wallet,
+  OPS: Settings2,
+  BRD: BedDouble,
+  COM: Megaphone,
+  HRD: Users,
+  CUR: BookOpen,
+  STU: GraduationCap,
+  QMS: ShieldCheck,
+  IT: Server,
+  GOV: Landmark,
+}
 
-
-export function CategoryGrid ({
-    categories,
-    year
+export function CategoryGrid({
+  categories,
+  year,
 }: {
-    categories: CategoryWithAccess[]
-    year: string
-}){
-    const pathname= usePathname()
+  categories: CategoryWithAccess[]
+  year: string
+}) {
+  const pathname = usePathname()
 
-    return (
-        
+  return (
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
       {categories.map((cat) => {
         const isCategoryActive = pathname === `/dashboard/archive/${year}/${cat.code}`
+        const CategoryIcon = CATEGORY_ICONS[cat.code] ?? FolderOpen
 
         const cardContent = (
           <Card
-            className={`relative overflow-hidden border-border/50 h-[100px] transition-all duration-200 ${
+            className={`relative overflow-hidden border-border/50 h-auto transition-all duration-200 ${
               isCategoryActive
                 ? 'bg-primary/10 border-primary shadow-sm scale-[1.02]'
                 : cat.isLocked
@@ -40,11 +65,12 @@ export function CategoryGrid ({
                   : 'bg-card border-l-4 border-l-primary hover:translate-y-[-2px] hover:shadow'
             }`}
           >
-            <CardHeader className="p-4 pb-2">
+            <CardHeader className=" px-4">
               <div className="flex justify-between items-start">
-                <span className="text-2xl font-extrabold font-heading text-foreground/80 tracking-wide">
-                  {cat.code}
-                </span>
+                <div className="flex items-center gap-2">
+                  <CategoryIcon className="h-5 w-5 text-muted-foreground" />
+                
+                </div>
                 <div className="flex items-center gap-2">
                   <span className="text-[10px] font-bold text-muted-foreground">
                     {cat.fileCount} Berkas
@@ -56,14 +82,13 @@ export function CategoryGrid ({
                   )}
                 </div>
               </div>
-              <CardTitle className="text-sm font-bold mt-1 text-foreground/90">
+              <CardTitle className="text-lg font-bold mt-1 text-foreground/90">
                 {cat.name}
               </CardTitle>
             </CardHeader>
           </Card>
         )
 
-        // KUNCI: kalau locked, jangan bungkus dengan Link — cegah navigasi meski cuma UX
         if (cat.isLocked) {
           return <div key={cat.code}>{cardContent}</div>
         }
@@ -77,4 +102,3 @@ export function CategoryGrid ({
     </div>
   )
 }
-

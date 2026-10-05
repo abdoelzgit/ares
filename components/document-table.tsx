@@ -4,6 +4,7 @@ import { useState, useMemo, useEffect } from "react"
 import { Input } from "@/components/ui/input"
 import { Button, buttonVariants } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
+
 import {
   Table,
   TableBody,
@@ -21,6 +22,9 @@ import {
   Trash2,
   Loader2,
 } from "lucide-react"
+import { UploadDocumentButton } from "@/app/dashboard/archive/[year]/[category]/upload-document-button"
+
+
 
 // Search bar mandiri — taruh di mana saja di page.tsx, lalu kirim value+onChange-nya
 // ke <DocumentTable searchQuery={...} /> supaya tabel ikut terfilter.
@@ -74,13 +78,17 @@ type DocumentTableProps = {
   pageSize?: number
   onEdit?: (doc: DocumentRow) => void
   onDelete?: (id: string) => void
+  folderPath?: string[]    
   showCategoryColumn?: boolean
+  category?: string
+  year?: string
   showYearColumn?: boolean
   emptyMessage?: string
   searchPlaceholder?: string
-  searchQuery?: string
-  hideInternalSearchBar?: boolean
+  searchQuery?: string             // ← baru: kalau diisi, search jadi "controlled" dari luar
+  hideInternalSearchBar?: boolean  // ← baru: sembunyikan input manual di dalam tabel
 }
+
 
 export function DocumentTable({
   docs,
@@ -92,8 +100,10 @@ export function DocumentTable({
   showYearColumn = false,
   emptyMessage = "Tidak ada dokumen.",
   searchPlaceholder = "Cari judul atau nomor berkas...",
-  searchQuery: externalSearchQuery,
-  hideInternalSearchBar = false,
+    folderPath = [],          // ← tambah ini
+
+  searchQuery: externalSearchQuery,      // ← baru
+  hideInternalSearchBar = false,         // ← baru
 }: DocumentTableProps) {
   const isControlled = externalSearchQuery !== undefined
   const [internalSearchQuery, setInternalSearchQuery] = useState("")
@@ -137,6 +147,9 @@ export function DocumentTable({
 
   return (
     <div>
+      <div className="flex flex-col gap-2">
+
+
       {!isControlled && !hideInternalSearchBar && (
         <div className="relative p-4 pb-2">
           <Search className="absolute left-6.5 top-6.5 h-4 w-4 text-muted-foreground" />
@@ -148,6 +161,8 @@ export function DocumentTable({
           />
         </div>
       )}
+      
+      </div>
 
       <Table>
         <TableHeader>

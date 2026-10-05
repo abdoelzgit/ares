@@ -18,7 +18,7 @@ const ALLOWED_TYPES = [
   "image/jpeg",
 ];
 
-const MAX_SIZE = 10 * 1024 * 1024; // 10MB
+const MAX_SIZE = 100 * 1024 * 1024; // 10MB
 
 export async function getDocuments(year: string, categoryCode: string) {
   const user = await getCurrentUser()
@@ -64,7 +64,8 @@ export async function listDocumentsInCategoryAction(categoryCode: string, year: 
 export async function uploadDocument(
   formData: FormData,
   schoolYear: string,
-  categoryCode: string
+  categoryCode: string,
+  folderId: string | null = null   // ← TAMBAHKAN parameter ini
 ) {
   const formattedTitle = formData.get('formattedTitle') as string
   const documentNumber = formData.get('documentNumber') as string
@@ -92,26 +93,30 @@ export async function uploadDocument(
 
     await assertCategoryAccess(await getCurrentUser(), category.id)
 
-    filePath = await saveFile(file) // pakai helper dari lib/file-storage.ts, simpan di luar public/
+    filePath = await saveFile(file)
 
-    if (!session?.user?.id) return { success: false, error: "Sesi login tidak ditemukan." }
-    const userId = session.user.id
+    const session2 = await auth()
+    if (!session2?.user?.id) return { success: false, error: "Sesi login tidak ditemukan." }
+    const userId = session2.user.id
 
     const document = await db.$transaction(async (tx: any) => {
-      const doc = await tx.document.create({ data: {                          // ← pastikan ada "data:" ini
-      title: formattedTitle,
-      description,
-      schoolYearId: archiveYear.id,
-      documentNumber,
-      categoryId: category.id,
-    }, })
+      const doc = await tx.document.create({
+        data: {
+          title: formattedTitle,
+          description,
+          schoolYearId: archiveYear.id,
+          documentNumber,
+          categoryId: category.id,
+          folderId,  
+        },
+      })
 
       const version = await tx.documentVersion.create({
         data: {
           documentId: doc.id,
           versionNumber: "v1.0",
           filePath: filePath!,
-          uploadedById: userId,   // ← pakai variabel lokal ini, bukan session.user.id langsung
+          uploadedById: userId,
         },
       })
 
@@ -120,7 +125,6 @@ export async function uploadDocument(
         data: { currentVersionId: version.id },
       })
     })
-
 
     revalidatePath(`/dashboard/archive/${schoolYear}/${categoryCode}`)
     return { success: true, data: document }

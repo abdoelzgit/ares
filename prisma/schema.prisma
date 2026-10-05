@@ -27,10 +27,32 @@ model Category {
   name       String
   createdAt  DateTime             @default(now()) @map("created_at")
   documents  Document[]
+  folders    Folder[]
+
   roleAccess RoleCategoryAccess[]
   userAccess UserCategoryAccess[]   // ← tambahkan baris ini
 
   @@map("categories")
+}
+
+model Folder {
+  id           String      @id @default(uuid()) @db.Uuid
+  name         String
+  categoryId   String      @map("category_id") @db.Uuid
+  category     Category    @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  schoolYearId String      @map("school_year_id") @db.Uuid
+  schoolYear   ArchiveYear @relation(fields: [schoolYearId], references: [id], onDelete: Cascade)
+  parentId     String?     @map("parent_id") @db.Uuid
+  parent       Folder?     @relation("FolderChildren", fields: [parentId], references: [id], onDelete: Cascade)
+  children     Folder[]    @relation("FolderChildren")
+  documents    Document[]
+  createdById  String      @map("created_by_id") @db.Uuid
+  createdBy    User        @relation(fields: [createdById], references: [id])
+  createdAt    DateTime    @default(now()) @map("created_at")
+
+  @@index([categoryId, schoolYearId])
+  @@index([parentId])
+  @@map("folders")
 }
 
 // Menentukan role mana saja yang boleh mengakses kategori mana saja.
@@ -69,6 +91,8 @@ model User {
   categoryAccess   UserCategoryAccess[]  
   createdAt        DateTime              @default(now()) @map("created_at")
   documentVersions DocumentVersion[]
+  foldersCreated   Folder[]
+
 
   @@map("users")
 }
@@ -78,6 +102,8 @@ model ArchiveYear {
   year      String     @unique
   createdAt DateTime   @default(now()) @map("created_at")
   documents Document[]
+  folders   Folder[]
+
   @@map("archive_years")
 }
 
@@ -99,10 +125,15 @@ model Document {
   currentVersion       DocumentVersion?     @relation("CurrentVersion", fields: [currentVersionId], references: [id], onDelete: SetNull)
 
   versions             DocumentVersion[]    @relation("DocumentVersions")
+  folderId             String?              @map("folder_id") @db.Uuid
+  folder               Folder?              @relation(fields: [folderId], references: [id], onDelete: SetNull)
+
+  
 
   createdAt            DateTime             @default(now()) @map("created_at")
   updatedAt            DateTime             @updatedAt @map("updated_at")
-
+  
+  @@index([folderId])
   @@index([categoryId])
   @@index([schoolYearId])
   @@map("documents")

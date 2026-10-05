@@ -1,7 +1,7 @@
 "use client"
 
 import { use, useState, useEffect } from "react"
-import Link from "next/link"
+
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -11,14 +11,10 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
 import { Separator } from "@/components/ui/separator"
-import { AppSidebar } from "@/components/app-sidebar"
-import { SidebarInset, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { SidebarTrigger } from "@/components/ui/sidebar"
 import { Input } from "@/components/ui/input"
-import { Button, buttonVariants } from "@/components/ui/button"
-import { cn } from "@/lib/utils"
+import { Button } from "@/components/ui/button"
+import { FolderBrowser } from "../folder-browser"
 import {
   Dialog,
   DialogContent,
@@ -26,112 +22,123 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import {
-  getDocuments,
-  uploadDocument,
-  updateDocument,
-  deleteDocument,
-} from "./actions"
-import { Plus, Trash2, Edit, Download, Loader2 } from "lucide-react"
+import { getFolderBreadcrumb } from "../folder-actions"
+
+import { uploadDocument, updateDocument, deleteDocument } from "../actions"
+import { Plus, Loader2 } from "lucide-react"
 import { formatDocumentTitle } from "@/lib/document-format"
-import { DocumentTable, DocumentSearchBar } from "@/components/document-table"
+import { notify } from "@/lib/notify"
+import { CreateFolderButton } from "../create-folder-button"
+import { DocumentSearchBar } from "@/components/document-table"
 
 interface PageProps {
-  params: Promise<{ year: string; category: string }>
+  params: Promise<{ year: string; category: string; folderPath?: string[] }>
 }
 
 export default function CategoryPage({ params }: PageProps) {
-  const { year, category } = use(params)
-  const [titleInput, setTitleInput] = useState('')
-  const [docNumberInput, setDocNumberInput] = useState('')
+  const { year, category, folderPath } = use(params)
+
+  // Segment terakhir dari folderPath = ID folder yang sedang dibuka.
+  // undefined/[] (root kategori) => null
+  const currentFolderId =
+    folderPath && folderPath.length > 0 ? folderPath[folderPath.length - 1] : null
   const [searchQuery, setSearchQuery] = useState("")
-  const [docs, setDocs] = useState<any[]>([])
-  const [loading, setLoading] = useState(true)
+  const [titleInput, setTitleInput] = useState("")
+  const [docNumberInput, setDocNumberInput] = useState("")
   const [uploading, setUploading] = useState(false)
   const [editingDoc, setEditingDoc] = useState<any>(null)
   const [openUpload, setOpenUpload] = useState(false)
+  const [breadcrumb, setBreadcrumb] = useState<{ id: string; name: string }[]>([])
 
-  const fetchDocs = async () => {
-    setLoading(true)
-    const data = await getDocuments(year, category)
-    setDocs(data)
-    setLoading(false)
-  }
+
+  useEffect(() => {
+    let cancelled = false
+    getFolderBreadcrumb(category, year, currentFolderId).then((crumb) => {
+      if (!cancelled) setBreadcrumb(crumb)
+    })
+    return () => {
+      cancelled = true
+    }
+  }, [currentFolderId, category, year])
+
+  // Dipakai untuk memaksa FolderBrowser refetch setelah upload/edit/hapus
+  const [refreshToken, setRefreshToken] = useState(0)
+  const triggerRefresh = () => setRefreshToken((t) => t + 1)
 
   const previewTitle = formatDocumentTitle({
     categoryCode: category,
     documentNumber: docNumberInput,
     rawTitle: titleInput,
     year,
+    folderPath: breadcrumb.map((b) => b.name),  // ← derive dari breadcrumb, bukan state terpisah
   })
+const handleUpload = async (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault()
+  setUploading(true)
 
-  useEffect(() => {
-    fetchDocs()
-  }, [year, category])
+  const formData = new FormData(e.currentTarget)
 
-  const handleUpload = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setUploading(true);
+  try {
+    const res = (await uploadDocument(formData, year, category, currentFolderId)) as any
 
-    const formData = new FormData(e.currentTarget);
-
-    try {
-      const res = await uploadDocument(formData, year, category) as any;
-
-      if (res.success) {
-        setOpenUpload(false);
-        fetchDocs();
-      } else {
-        alert(res.error);
-      }
-    } catch (err) {
-      console.error(err);
-      alert("Gagal mengunggah dokumen");
-    } finally {
-      setUploading(false);
+    if (res.success) {
+      setOpenUpload(false)
+      setTitleInput("")
+      setDocNumberInput("")
+      triggerRefresh()
+      notify.success("Dokumen berhasil diunggah")
+    } else {
+      notify.error(res.error ?? "Gagal mengunggah dokumen")
     }
-  };
+  } catch (err) {
+    console.error(err)
+    notify.error("Gagal mengunggah dokumen")
+  } finally {
+    setUploading(false)
+  }
+}
 
   const handleUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+    e.preventDefault()
 
-    const formData = new FormData(e.currentTarget);
+    const formData = new FormData(e.currentTarget)
 
     try {
       const res = (await updateDocument(editingDoc.id, {
         title: formData.get("title") as string,
         description: formData.get("description") as string,
         documentNumber: formData.get("documentNumber") as string,
-      })) as any;
+      })) as any
 
       if (res.success) {
-        setEditingDoc(null);
-        fetchDocs();
+        setEditingDoc(null)
+        triggerRefresh()
+        notify.success("Dokumen berhasil diedit")
       } else {
-        alert(res.error);
+        notify.error(res.error ?? "Gagal edit dokumen")
       }
     } catch (err) {
-      console.error(err);
-      alert("Gagal mengubah dokumen");
+      console.error(err)
+      notify.error("Gagal edit dokumen")
     }
-  };
+  }
 
   const handleDelete = async (id: string) => {
-    if (!confirm("Apakah Anda yakin ingin menghapus dokumen ini?")) return;
+    if (!confirm("Apakah Anda yakin ingin menghapus dokumen ini?")) return
 
     try {
-      const res = (await deleteDocument(id)) as any;
-
+      const res = (await deleteDocument(id)) as any
       if (res.success) {
-        fetchDocs();
+        triggerRefresh()
+        notify.success("Dokumen berhasil dihapus")
       } else {
-        alert(res.error);
+        notify.error(res.error ?? "Gagal menghapus dokumen")
       }
     } catch (err) {
-      console.error(err);
-      alert("Gagal menghapus dokumen");
+      console.error(err)
+      notify.error("Gagal menghapus dokumen")
     }
-  };
+  }
 
   return (
     <>
@@ -139,13 +146,9 @@ export default function CategoryPage({ params }: PageProps) {
         <div className="flex items-center gap-2 w-full justify-between">
           <div className="flex items-center gap-2">
             <SidebarTrigger className="-ml-1" />
-            <Separator
-              orientation="vertical"
-              className="mr-2 data-vertical:h-4 data-vertical:self-auto"
-            />
+            <Separator orientation="vertical" className="mr-2 data-vertical:h-4 data-vertical:self-auto" />
             <Breadcrumb>
               <BreadcrumbList>
-
                 <BreadcrumbItem>
                   <BreadcrumbLink href="/dashboard/archive">Arsip</BreadcrumbLink>
                 </BreadcrumbItem>
@@ -154,35 +157,65 @@ export default function CategoryPage({ params }: PageProps) {
                   <BreadcrumbLink href={`/dashboard/archive/${year}`}>Tahun {year}</BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
+
+                {/* Kategori — jadi link kalau lagi di dalam folder, jadi current page kalau di root kategori */}
                 <BreadcrumbItem>
-                  <BreadcrumbPage>{category}</BreadcrumbPage>
+                  {breadcrumb.length > 0 ? (
+                    <BreadcrumbLink href={`/dashboard/archive/${year}/${category}`}>
+                      {category}
+                    </BreadcrumbLink>
+                  ) : (
+                    <BreadcrumbPage>{category}</BreadcrumbPage>
+                  )}
                 </BreadcrumbItem>
+
+                {/* Folder path dinamis */}
+                {breadcrumb.map((crumb, i) => (
+                  <span key={crumb.id} className="flex items-center gap-1.5">
+                    <BreadcrumbSeparator />
+                    <BreadcrumbItem>
+                      {i === breadcrumb.length - 1 ? (
+                        <BreadcrumbPage>{crumb.name}</BreadcrumbPage>
+                      ) : (
+                        <BreadcrumbLink href={`/dashboard/archive/${year}/${category}/${crumb.id}`}>
+                          {crumb.name}
+                        </BreadcrumbLink>
+                      )}
+                    </BreadcrumbItem>
+                  </span>
+                ))}
               </BreadcrumbList>
             </Breadcrumb>
           </div>
 
-
+          <DocumentSearchBar
+            value={searchQuery}
+            onChange={setSearchQuery}
+            className="w-64"
+          />
         </div>
       </header>
 
       <main className="p-6 space-y-4">
-        <div className="flex flex-col gap-2 justify-between w-full">
-
+        <div className="flex flex-col gap-4 w-full">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div className="flex flex-col gap-0.5">
               <span className="text-xl font-medium">
                 Daftar Dokumen ({category} - {year})
               </span>
               <p className="text-xs text-gray-400 font-light">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque, quos!
+                Kelola folder dan dokumen untuk bidang {category} tahun ajaran {year}.
               </p>
             </div>
 
-            <div className="flex items-center gap-2">
-              <DocumentSearchBar value={searchQuery} onChange={setSearchQuery} />
-
-              {/* UPLOAD DIALOG */}
-              <Dialog open={openUpload} onOpenChange={setOpenUpload}>
+            {/* UPLOAD DIALOG */}
+            <div className="flex gap-2">
+              <CreateFolderButton
+                year={year}
+                category={category}
+                currentFolderId={currentFolderId}
+                onCreated={triggerRefresh}
+              />            <Dialog open={openUpload} onOpenChange={setOpenUpload}>
                 <DialogTrigger
                   render={
                     <Button className="gap-1 p-4 bg-primary text-white">
@@ -219,7 +252,6 @@ export default function CategoryPage({ params }: PageProps) {
                       />
                     </div>
 
-                    {/* Preview format otomatis */}
                     {titleInput && (
                       <div className="rounded-md border border-dashed border-blue-300 bg-blue-50 px-3 py-2">
                         <p className="text-[10px] font-semibold text-blue-700 uppercase tracking-wide mb-0.5">
@@ -229,7 +261,6 @@ export default function CategoryPage({ params }: PageProps) {
                       </div>
                     )}
 
-                    {/* WAJIB ADA — ini yang dibaca server action */}
                     <input type="hidden" name="formattedTitle" value={previewTitle} />
 
                     <div className="space-y-1">
@@ -238,19 +269,10 @@ export default function CategoryPage({ params }: PageProps) {
                     </div>
 
                     <div className="flex justify-end gap-2 pt-2">
-                      <Button
-                        type="button"
-                        variant="outline"
-                        onClick={() => setOpenUpload(false)}
-                        disabled={uploading}
-                      >
+                      <Button type="button" variant="outline" onClick={() => setOpenUpload(false)} disabled={uploading}>
                         Batal
                       </Button>
-                      <Button
-                        type="submit"
-                        className="bg-primary text-white"
-                        disabled={uploading}
-                      >
+                      <Button type="submit" className="bg-primary text-white" disabled={uploading}>
                         {uploading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Simpan"}
                       </Button>
                     </div>
@@ -259,12 +281,17 @@ export default function CategoryPage({ params }: PageProps) {
               </Dialog>
             </div>
           </div>
-          <DocumentTable
-            docs={docs}
-            loading={loading}
+
+          {/* FolderBrowser sudah menampilkan folder + dokumen level ini — TIDAK perlu DocumentTable terpisah lagi di sini */}
+          <FolderBrowser
+            key={refreshToken}
+            year={year}
+            category={category}
+            currentFolderId={currentFolderId}
             searchQuery={searchQuery}
-            onEdit={(doc) => setEditingDoc(doc)}
-            onDelete={(id) => handleDelete(id)}
+            breadcrumb={breadcrumb}
+            onEditDocument={(doc) => setEditingDoc(doc)}
+            onDeleteDocument={handleDelete}
           />
         </div>
       </main>
@@ -290,7 +317,7 @@ export default function CategoryPage({ params }: PageProps) {
                 <Button type="button" variant="outline" onClick={() => setEditingDoc(null)}>
                   Batal
                 </Button>
-                <Button type="submit" className="bg-primary  text-white">
+                <Button type="submit" className="bg-primary text-white">
                   Simpan
                 </Button>
               </div>
@@ -298,7 +325,6 @@ export default function CategoryPage({ params }: PageProps) {
           )}
         </DialogContent>
       </Dialog>
-
     </>
   )
 }

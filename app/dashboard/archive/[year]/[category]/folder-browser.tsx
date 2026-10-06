@@ -16,6 +16,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { cn } from "@/lib/utils"
 import { DocumentTable } from "@/components/document-table"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import {
     getFolderContents,
     updateFolder,
@@ -30,6 +31,7 @@ export function FolderBrowser({
     breadcrumb,
     onEditDocument,
     onDeleteDocument,
+    uploadItems = [],
 }: {
     year: string
     category: string
@@ -38,6 +40,7 @@ export function FolderBrowser({
     breadcrumb: { id: string; name: string }[]
     onEditDocument?: (doc: any) => void
     onDeleteDocument?: (id: string) => void
+    uploadItems?: Array<{ name: string; status: "pending" | "uploading" | "success" | "error"; error?: string }>
 }) {
     const router = useRouter()
 
@@ -164,6 +167,36 @@ export function FolderBrowser({
                                     </CardHeader>
                                 </Card>
                             ))}
+                        </div>
+                    )}
+
+                    {uploadItems.length > 0 && (
+                        <div className="overflow-hidden rounded-md border">
+                            <Table>
+                                <TableHeader>
+                                    <TableRow>
+                                        <TableHead>Dokumen upload</TableHead>
+                                        <TableHead className="text-right">Status</TableHead>
+                                    </TableRow>
+                                </TableHeader>
+                                <TableBody>
+                                    {uploadItems.map((item, index) => (
+                                        <TableRow key={`${item.name}-${index}`}>
+                                            <TableCell className="font-medium">{item.name}</TableCell>
+                                            <TableCell className={
+                                                item.status === "success" ? "text-right text-green-600" :
+                                                item.status === "error" ? "text-right text-red-600" :
+                                                item.status === "uploading" ? "text-right text-blue-600" :
+                                                "text-right text-muted-foreground"
+                                            }>
+                                                {item.status === "pending" ? "Menunggu" :
+                                                 item.status === "uploading" ? "Mengunggah" :
+                                                 item.status === "success" ? "Berhasil" : item.error}
+                                            </TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
                         </div>
                     )}
 

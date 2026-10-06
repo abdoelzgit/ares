@@ -22,7 +22,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { getFolderBreadcrumb } from "../folder-actions"
+import { createFolder, getFolderBreadcrumb } from "../folder-actions"
 
 import { uploadDocument, updateDocument, deleteDocument } from "../actions"
 import { Plus, Loader2 } from "lucide-react"
@@ -34,6 +34,8 @@ import { DocumentSearchBar } from "@/components/document-table"
 interface PageProps {
   params: Promise<{ year: string; category: string; folderPath?: string[] }>
 }
+
+type UploadItem = { name: string; status: "pending" | "uploading" | "success" | "error"; error?: string }
 
 export default function CategoryPage({ params }: PageProps) {
   const { year, category, folderPath } = use(params)
@@ -48,6 +50,8 @@ export default function CategoryPage({ params }: PageProps) {
   const [uploading, setUploading] = useState(false)
   const [editingDoc, setEditingDoc] = useState<any>(null)
   const [openUpload, setOpenUpload] = useState(false)
+  const [folderFiles, setFolderFiles] = useState<File[]>([])
+  const [uploadItems, setUploadItems] = useState<UploadItem[]>([])
   const [breadcrumb, setBreadcrumb] = useState<{ id: string; name: string }[]>([])
 
 
@@ -79,6 +83,71 @@ const handleUpload = async (e: React.FormEvent<HTMLFormElement>) => {
   const formData = new FormData(e.currentTarget)
 
   try {
+    if (folderFiles.length) {
+      const documents = folderFiles.filter((item) => /\.(pdf|docx?|xlsx?|png|jpe?g)$/i.test(item.name))
+      if (!documents.length) {
+        notify.error("Folder tidak berisi dokumen yang didukung.")
+        return
+      }
+
+      const folderResult = await createFolder(category, year, titleInput, currentFolderId)
+      if (!folderResult.success || !folderResult.data) {
+        notify.error(folderResult.error ?? "Gagal membuat folder upload.")
+        return
+      }
+
+      setUploadItems(documents.map((item) => ({ name: item.name, status: "pending" })))
+      let uploaded = 0
+      for (const [index, item] of documents.entries()) {
+        setUploadItems((items) => items.map((entry, itemIndex) =>
+          itemIndex === index ? { ...entry, status: "uploading" } : entry
+        ))
+        const itemFormData = new FormData()
+        itemFormData.set("file", item)
+        itemFormData.set("formattedTitle", formatDocumentTitle({
+          categoryCode: category,
+          documentNumber: "",
+          rawTitle: item.name.replace(/\.[^/.]+$/, ""),
+          year,
+          folderPath: [...breadcrumb.map((crumb) => crumb.name), titleInput],
+        }))
+        itemFormData.set("documentNumber", "")
+        itemFormData.set("schoolYear", year)
+        itemFormData.set("categoryCode", category)
+        itemFormData.set("folderId", folderResult.data.id)
+
+        try {
+          const response = await fetch("/api/documents/upload", { method: "POST", body: itemFormData })
+          const result = await response.json() as { success: boolean; error?: string }
+          if (response.ok && result.success) {
+            uploaded++
+            setUploadItems((items) => items.map((entry, itemIndex) =>
+              itemIndex === index ? { ...entry, status: "success" } : entry
+            ))
+          } else {
+            setUploadItems((items) => items.map((entry, itemIndex) =>
+              itemIndex === index ? { ...entry, status: "error", error: result.error ?? "Gagal mengunggah." } : entry
+            ))
+          }
+        } catch {
+          setUploadItems((items) => items.map((entry, itemIndex) =>
+            itemIndex === index ? { ...entry, status: "error", error: "Koneksi upload terputus." } : entry
+          ))
+        }
+      }
+      if (!uploaded) {
+        notify.error("Tidak ada dokumen yang dapat diunggah dari folder.")
+        return
+      }
+
+      setTitleInput("")
+      setDocNumberInput("")
+      setFolderFiles([])
+      triggerRefresh()
+      notify.success(`${uploaded} dokumen berhasil diunggah ke folder baru. Lihat status di bawah.`)
+      return
+    }
+
     const res = (await uploadDocument(formData, year, category, currentFolderId)) as any
 
     if (res.success) {
@@ -215,7 +284,8 @@ const handleUpload = async (e: React.FormEvent<HTMLFormElement>) => {
                 category={category}
                 currentFolderId={currentFolderId}
                 onCreated={triggerRefresh}
-              />            <Dialog open={openUpload} onOpenChange={setOpenUpload}>
+              />
+              <Dialog open={openUpload} onOpenChange={setOpenUpload}>
                 <DialogTrigger
                   render={
                     <Button className="gap-1 p-4 bg-primary text-white">
@@ -265,7 +335,29 @@ const handleUpload = async (e: React.FormEvent<HTMLFormElement>) => {
 
                     <div className="space-y-1">
                       <label className="text-xs font-semibold">Berkas File</label>
-                      <Input type="file" name="file" required />
+                      <Input type="file" name="file" accept=".pdf,.doc,.docx,.xls,.xlsx,.png,.jpg,.jpeg" required={!folderFiles.length} />
+                    </div>
+
+                    <div className="space-y-1">
+                      <label className="text-xs font-semibold">Atau pilih folder dokumen</label>
+                      <Input
+                        type="file"
+                        multiple
+                        accept=".pdf,.doc,.docx,.xls,.xlsx,.png,.jpg,.jpeg"
+                        {...({ webkitdirectory: "" } as React.InputHTMLAttributes<HTMLInputElement>)}
+                        onChange={(event) => {
+                          const files = Array.from(event.target.files ?? [])
+                          setFolderFiles(files)
+                          setUploadItems([])
+                          const folderName = files[0]?.webkitRelativePath.split("/")[0]
+                          if (folderName) setTitleInput(folderName)
+                        }}
+                      />
+                      <p className="text-xs text-muted-foreground">
+                        {folderFiles.length
+                          ? `${folderFiles.length} file dipilih; akan disimpan dalam satu folder baru.`
+                          : "Semua dokumen dalam folder akan disimpan ke satu folder baru."}
+                      </p>
                     </div>
 
                     <div className="flex justify-end gap-2 pt-2">
@@ -292,6 +384,7 @@ const handleUpload = async (e: React.FormEvent<HTMLFormElement>) => {
             breadcrumb={breadcrumb}
             onEditDocument={(doc) => setEditingDoc(doc)}
             onDeleteDocument={handleDelete}
+            uploadItems={uploadItems}
           />
         </div>
       </main>

@@ -22,10 +22,6 @@ import {
   Trash2,
   Loader2,
 } from "lucide-react"
-import { UploadDocumentButton } from "@/app/dashboard/archive/[year]/[category]/upload-document-button"
-
-
-
 // Search bar mandiri — taruh di mana saja di page.tsx, lalu kirim value+onChange-nya
 // ke <DocumentTable searchQuery={...} /> supaya tabel ikut terfilter.
 type DocumentSearchBarProps = {

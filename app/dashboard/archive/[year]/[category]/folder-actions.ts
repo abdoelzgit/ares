@@ -2,6 +2,7 @@
 
 import { prisma } from "@/lib/prisma"
 import { getCurrentUser, assertCategoryAccess } from "@/lib/rbac"
+import { deleteFile } from "@/lib/file-storage"
 import { revalidatePath } from "next/cache"
 
 async function resolveCategoryAndYear(categoryCode: string, year: string) {
@@ -109,7 +110,7 @@ export async function createFolder(
             return { success: false, error: "Folder dengan nama ini sudah ada di lokasi ini." }
         }
 
-        await prisma.folder.create({
+        const folder = await prisma.folder.create({
             data: {
                 name: trimmedName,
                 categoryId: category.id,
@@ -120,7 +121,7 @@ export async function createFolder(
         })
 
         revalidatePath(`/dashboard/archive/${year}/${categoryCode}`)
-        return { success: true }
+        return { success: true, data: { id: folder.id } }
     } catch (err: any) {
         return { success: false, error: err.message || "Gagal membuat folder." }
     }
@@ -174,25 +175,33 @@ export async function updateFolder(
 export async function deleteFolder(folderId: string) {
     const user = await getCurrentUser()
 
-    const folder = await prisma.folder.findUnique({
-        where: { id: folderId },
-        include: { _count: { select: { documents: true, children: true } } },
-    })
+    const folder = await prisma.folder.findUnique({ where: { id: folderId } })
     if (!folder) return { success: false, error: "Folder tidak ditemukan." }
 
     await assertCategoryAccess(user, folder.categoryId)
 
-    // Cegah hapus folder yang masih berisi sub-folder atau dokumen —
-    // mencegah kehilangan data tanpa sengaja, user harus kosongkan dulu
-    if (folder._count.children > 0 || folder._count.documents > 0) {
-        return {
-            success: false,
-            error: "Folder tidak kosong. Pindahkan atau hapus isinya terlebih dahulu.",
-        }
-    }
-
     try {
-        await prisma.folder.delete({ where: { id: folderId } })
+        const folders = await prisma.folder.findMany({
+            where: { categoryId: folder.categoryId, schoolYearId: folder.schoolYearId },
+            select: { id: true, parentId: true },
+        })
+        const children = new Map<string, string[]>()
+        for (const item of folders) {
+            if (item.parentId) children.set(item.parentId, [...(children.get(item.parentId) ?? []), item.id])
+        }
+        const folderIds = [folderId]
+        for (const id of folderIds) folderIds.push(...(children.get(id) ?? []))
+
+        const documents = await prisma.document.findMany({
+            where: { folderId: { in: folderIds } },
+            select: { id: true, versions: { select: { filePath: true } } },
+        })
+
+        await prisma.$transaction([
+            prisma.document.deleteMany({ where: { id: { in: documents.map((document) => document.id) } } }),
+            prisma.folder.delete({ where: { id: folderId } }),
+        ])
+        await Promise.all(documents.flatMap((document) => document.versions).map((version) => deleteFile(version.filePath)))
         revalidatePath("/dashboard/archive")
         return { success: true }
     } catch (err: any) {

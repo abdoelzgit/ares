@@ -1,4 +1,5 @@
-// app/dashboard/queries.ts (BARU, TANPA "use server")
+import 'server-only'
+
 import db from '@/lib/prisma'
 import { getCurrentUser, getAccessibleCategoryIds } from '@/lib/rbac'
 

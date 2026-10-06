@@ -70,10 +70,10 @@ export async function uploadDocument(
   const formattedTitle = formData.get('formattedTitle') as string
   const documentNumber = formData.get('documentNumber') as string
   const description = formData.get("description") as string | null
+  const confidentialityLevel = formData.get("confidentialityLevel") as string | null
   const file = formData.get("file") as File
 
   if (!formattedTitle) return { success: false, error: "Judul wajib diisi." }
-  if (!documentNumber) return { success: false, error: "Nomor dokumen wajib diisi." }
   if (!file || file.size === 0) return { success: false, error: "File belum dipilih." }
   if (file.size > MAX_SIZE) return { success: false, error: "Ukuran file melebihi 10MB." }
   if (!ALLOWED_TYPES.includes(file.type)) return { success: false, error: "Tipe file tidak didukung." }
@@ -91,6 +91,13 @@ export async function uploadDocument(
     if (!category) return { success: false, error: "Kategori tidak ditemukan." }
     if (!archiveYear) return { success: false, error: "Tahun ajaran tidak ditemukan." }
 
+    if (folderId) {
+      const folder = await db.folder.findFirst({
+        where: { id: folderId, categoryId: category.id, schoolYearId: archiveYear.id },
+      })
+      if (!folder) return { success: false, error: "Folder tidak ditemukan." }
+    }
+
     await assertCategoryAccess(await getCurrentUser(), category.id)
 
     filePath = await saveFile(file)
@@ -105,9 +112,15 @@ export async function uploadDocument(
           title: formattedTitle,
           description,
           schoolYearId: archiveYear.id,
-          documentNumber,
+          documentNumber: documentNumber || null,
           categoryId: category.id,
-          folderId,  
+          folderId,
+          confidentialityLevel:
+            confidentialityLevel === "PUBLIC" ||
+            confidentialityLevel === "CONFIDENTIAL" ||
+            confidentialityLevel === "INTERNAL"
+              ? confidentialityLevel
+              : "INTERNAL",
         },
       })
 

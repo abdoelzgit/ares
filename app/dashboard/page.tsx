@@ -1,8 +1,5 @@
-
-
 import * as React from "react"
 import Link from "next/link"
-import { useState } from "react"
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -17,7 +14,6 @@ import { SidebarTrigger } from "@/components/ui/sidebar"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
 
 import {
   Table,
@@ -54,20 +50,16 @@ import {
   Unlock,
   Eye,
   FileDown,
-  UploadCloud,
   FolderOpen,
   AlertCircle
 } from "lucide-react"
 
 import { DocumentTable } from "@/components/document-table"
 import { DashboardDocuments } from "./document-dashboard"
-import { BulkUploadModal } from "@/components/dashboard/bulk-upload-modal"
 import { DashboardStats } from "./dashboard-stats"
 
 
 export default function Page() {
-  const [uploadOpen, setUploadOpen] = useState(false)
-
   return (
     <>
       {/* TOP BAR / HEADER */}
@@ -119,19 +111,7 @@ export default function Page() {
       <DashboardDocuments />
         </section>
 
-        {/* SEARCH & DOCUMENTS LIST */}
-        <section className="">
-          {/* LEFT: Search, Filters & Actions */}
-          <div className="flex gap-2">
-            <Button onClick={() => setUploadOpen(true)}>
-              <UploadCloud className="mr-2 h-4 w-4" />
-              Bulk Upload
-            </Button>
-          </div>
-        </section>
       </main>
-
-      <BulkUploadModal open={uploadOpen} onOpenChange={setUploadOpen} />
     </>
   )
 }
